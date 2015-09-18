@@ -29,7 +29,7 @@ app.on('ready', () => {
   Menu.setApplicationMenu(menu);
 
 
-  mainWindow.showUrl('index.html', () => {
+  mainWindow.showUrl(__dirname + '/index.html', () => {
     mainWindow.maximize();
   });
 });
