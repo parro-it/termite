@@ -1,0 +1,10 @@
+es6
+dist_test
+test
+*.sublime-project
+.gitignore
+.editorconfig
+
+
+rethinkdb_data
+private

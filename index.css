@@ -1,0 +1,12 @@
+body {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  background: #002b36;
+  /* white-space: pre; */
+}
+
+.reverse-video {
+  border-left: 1px solid white;
+  margin-left: -1px;
+}
