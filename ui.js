@@ -1,44 +1,100 @@
 const pty = require('pty.js');
 const EventEmitter = require('events').EventEmitter;
 const hterm = global.hterm;
-const lib = global.lib;
+const loadConfig = require('./load-config');
+const tabsManager = require('./tabs-manager');
+const uuid = require('node-uuid');
+const ipc = require('ipc');
+
+function createDomElements() {
+  const id = '__' + uuid.v4().replace(/-/g, '');
+  const stdin = document.createElement('input');
+  stdin.id = id + '-stdin';
+  stdin.classList.add('stdin');
+  stdin.type = 'text';
+
+  const terminal = document.createElement('div');
+  terminal.classList.add('terminal');
+  terminal.id = id + '-stdout';
+
+  document.body.appendChild(stdin);
+  document.body.appendChild(terminal);
+
+  const resetFocus = e => {
+    setTimeout(() => e.target.focus());
+  };
+
+
+  const deactivateTab = () => {
+    const currentTab = document.querySelector('.chrome-tab-current');
+
+    if (currentTab === null) {
+      return;
+    }
+
+    const tabId = currentTab.id;
+    const currentStdin = document.querySelector(`#${tabId}-stdin`);
+    const currentStdout = document.querySelector(`#${tabId}-stdout`);
+    currentStdout.style.display = 'none';
+    currentStdin.style.display = 'none';
+    currentStdin.removeEventListener('blur', resetFocus);
+  };
+
+
+  const keepFocus = () => {
+    stdin.addEventListener('blur', resetFocus);
+    stdin.focus();
+  };
+
+  const activateTab = () => {
+    stdin.style.display = '';
+    terminal.style.display = '';
+    keepFocus();
+  };
+
+  deactivateTab();
+  const tab = tabsManager.addTab(id);
+  activateTab();
+
+  tab.addEventListener('mouseup', () => {
+    deactivateTab();
+    activateTab();
+  });
+
+  const closeTab = tab.querySelector('.chrome-tab-close');
+  closeTab.addEventListener('click', () => {
+    const tabs = document.querySelectorAll('.chrome-tab');
+    if (tabs.length === 0) {
+      startShell(); // eslint-disable-line
+    }
+    const click = new Event('click');
+    tabs[0].dispatchEvent(click);
+    const mouseup = new Event('mouseup');
+    tabs[0].dispatchEvent(mouseup);
+  });
+
+  return {
+    tab: tab,
+    stdin: stdin,
+    stdout: terminal
+  };
+}
 
 function startGui() {
-  hterm.defaultStorage = new lib.Storage.Memory();
-  const t = new hterm.Terminal('parro-it');
+  const config = loadConfig();
+  hterm.defaultStorage = config.prefs;
+  const t = new hterm.Terminal();
+  config.load(t);
 
   const termGui = new EventEmitter();
   termGui.write = data => {
     t.io.print(data);
   };
 
-  // t.prefs_.set('background-color', '#fff');
-
-  // Disable bold.
-  t.prefs_.set('enable-bold', false);
-
-  // Use this for Solarized Dark
-  t.prefs_.set('background-color', '#002b36');
-  t.prefs_.set('foreground-color', '#839496');
-
-  t.prefs_.set('color-palette-overrides', [
-    '#073642',
-    '#dc322f',
-    '#859900',
-    '#b58900',
-    '#268bd2',
-    '#d33682',
-    '#2aa198',
-    '#eee8d5',
-    '#002b36',
-    '#cb4b16',
-    '#586e75',
-    '#657b83',
-    '#839496',
-    '#6c71c4',
-    '#93a1a1',
-    '#fdf6e3'
-  ]);
+  t.setWindowTitle = title => {
+    const elm = document.querySelector('.chrome-tab-current .chrome-tab-title');
+    elm.textContent = title;
+  };
 
   t.onTerminalReady = () => {
     // Create a new terminal IO object and give it the foreground.
@@ -59,15 +115,19 @@ function startGui() {
     };
   };
 
-  const stdin = document.querySelector('#stdin');
-  stdin.addEventListener('blur', () => {
-    setTimeout(() => stdin.focus());
+
+  const elms = createDomElements();
+
+  const closeTab = elms.tab.querySelector('.chrome-tab-close');
+  closeTab.addEventListener('click', () => {
+    elms.stdin.remove();
+    elms.stdout.remove();
+    termGui.emit('closed');
   });
-  stdin.focus();
-  t.keyboard.installKeyboard(stdin);
 
 
-  t.decorate(document.querySelector('#terminal'));
+  t.keyboard.installKeyboard(elms.stdin);
+  t.decorate(elms.stdout);
   return termGui;
 }
 
@@ -88,9 +148,15 @@ function startShell() {
     term.write(key);
   });
 
+  termGui.on('closed', () => {
+    term.destroy();
+  });
+
   termGui.on('resize', (columns, rows) => {
     term.resize(columns, rows);
   });
 }
 
 startShell();
+
+ipc.on('new-tab', startShell);

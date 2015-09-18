@@ -6,18 +6,26 @@ body {
   /* white-space: pre; */
 }
 
-html, body, #terminal {
+html, body {
   width: 100%;
   height: 100%;
 }
 
 
-#terminal {
+.terminal {
   position: absolute;
-  top: 0;
+  top: 40px;
+  height: -webkit-calc(100% - 40px);
+  width: 100%;
 }
 
 .reverse-video {
   border-left: 1px solid white;
   margin-left: -1px;
+}
+
+.chrome-tabs-shell {
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
