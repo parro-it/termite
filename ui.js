@@ -1,61 +1,81 @@
-const hypernal = require('hypernal');
 const pty = require('pty.js');
-const cursor = require('hypernal/lib/cursor');
-const Vt100KeysSource = require('./vt100-keyevent');
+const EventEmitter = require('events').EventEmitter;
+const hterm = global.hterm;
+const lib = global.lib;
 
 function startGui() {
-  const termGui = hypernal({ tail: true });
-  const Terminal = termGui.term.constructor;
-  termGui.tail = true;
+  hterm.defaultStorage = new lib.Storage.Memory();
+  const t = new hterm.Terminal('parro-it');
 
-  termGui.writeln = function writeln(line) {
-    this.term.writeln(line);
+  const termGui = new EventEmitter();
+  termGui.write = data => {
+    t.io.print(data);
   };
 
-  termGui.write = function write(data) {
-    this.term.write(data);
+  // t.prefs_.set('background-color', '#fff');
+
+  // Disable bold.
+  t.prefs_.set('enable-bold', false);
+
+  // Use this for Solarized Dark
+  t.prefs_.set('background-color', '#002b36');
+  t.prefs_.set('foreground-color', '#839496');
+
+  t.prefs_.set('color-palette-overrides', [
+    '#073642',
+    '#dc322f',
+    '#859900',
+    '#b58900',
+    '#268bd2',
+    '#d33682',
+    '#2aa198',
+    '#eee8d5',
+    '#002b36',
+    '#cb4b16',
+    '#586e75',
+    '#657b83',
+    '#839496',
+    '#6c71c4',
+    '#93a1a1',
+    '#fdf6e3'
+  ]);
+
+  t.onTerminalReady = () => {
+    // Create a new terminal IO object and give it the foreground.
+    // (The default IO object just prints warning messages about unhandled
+    // things to the the JS console.)
+    const io = t.io.push();
+
+    io.onVTKeystroke = str => {
+      termGui.emit('data', str);
+    };
+
+    io.sendString = str => {
+      termGui.emit('data', str);
+    };
+
+    io.onTerminalResize = (columns, rows) => {
+      termGui.emit('resize', columns, rows);
+    };
   };
 
-
-  // Terminal.cursorBlink = true;
-  cursor(Terminal);
-  Terminal.prototype.cursorBlink = function cursorBlink() {
-    this.cursorState ^= 1;
-    this.refresh(this.y, this.y);
-  };
-
-  const originalRefresh = Terminal.prototype.refresh;
-
-  Terminal.prototype.refresh = function refresh(start, end) {
-    window.requestAnimationFrame(() => {
-      originalRefresh.call(this, start, end);
-      document.body.scrollTop = document.body.scrollHeight;
-    });
-  };
+  const stdin = document.querySelector('#stdin');
+  stdin.addEventListener('blur', () => {
+    setTimeout(() => stdin.focus());
+  });
+  stdin.focus();
+  t.keyboard.installKeyboard(stdin);
 
 
-  termGui.term.showCursor();
-  termGui.term.startBlink();
-  termGui.appendTo('body');
-
-  const keySource = new Vt100KeysSource(document.body);
-  termGui.on = keySource.on.bind(keySource);
+  t.decorate(document.querySelector('#terminal'));
   return termGui;
 }
 
 function startShell() {
-  const cols = Math.round(window.innerWidth / 14);
-  const rows = Math.round(window.innerHeight / 27);
-
-  const termGui = startGui({
-    cols: cols,
-    rows: rows
-  });
+  const termGui = startGui();
 
   const term = pty.spawn('zsh', [], {
     name: 'xterm-color',
-    cols: cols,
-    rows: rows,
     cwd: process.env.HOME,
     env: process.env
   });
@@ -68,7 +88,9 @@ function startShell() {
     term.write(key);
   });
 
-  term.write('ls /\r');
+  termGui.on('resize', (columns, rows) => {
+    term.resize(columns, rows);
+  });
 }
 
 startShell();

@@ -6,6 +6,17 @@ body {
   /* white-space: pre; */
 }
 
+html, body, #terminal {
+  width: 100%;
+  height: 100%;
+}
+
+
+#terminal {
+  position: absolute;
+  top: 0;
+}
+
 .reverse-video {
   border-left: 1px solid white;
   margin-left: -1px;

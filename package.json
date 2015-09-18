@@ -12,7 +12,6 @@
   "dependencies": {
     "electron-debug": "^0.2.1",
     "electron-window": "^0.6.0",
-    "hypernal": "^0.3.0",
     "pty.js": "^0.3.0"
   },
   "eslintConfig": {
