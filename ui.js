@@ -5,11 +5,35 @@ const Vt100KeysSource = require('./vt100-keyevent');
 
 function startGui() {
   const termGui = hypernal({ tail: true });
+  const Terminal = termGui.term.constructor;
   termGui.tail = true;
 
+  termGui.writeln = function writeln(line) {
+    this.term.writeln(line);
+  };
 
-  termGui.term.constructor.cursorBlink = true;
-  cursor(termGui.term.constructor);
+  termGui.write = function write(data) {
+    this.term.write(data);
+  };
+
+
+  // Terminal.cursorBlink = true;
+  cursor(Terminal);
+  Terminal.prototype.cursorBlink = function cursorBlink() {
+    this.cursorState ^= 1;
+    this.refresh(this.y, this.y);
+  };
+
+  const originalRefresh = Terminal.prototype.refresh;
+
+  Terminal.prototype.refresh = function refresh(start, end) {
+    window.requestAnimationFrame(() => {
+      originalRefresh.call(this, start, end);
+      document.body.scrollTop = document.body.scrollHeight;
+    });
+  };
+
+
   termGui.term.showCursor();
   termGui.term.startBlink();
   termGui.appendTo('body');
