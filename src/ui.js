@@ -65,7 +65,7 @@ function createDomElements() {
   closeTab.addEventListener('click', () => {
     const tabs = document.querySelectorAll('.chrome-tab');
     if (tabs.length === 0) {
-      startShell(); // eslint-disable-line
+      return startShell(); // eslint-disable-line
     }
     const click = new Event('click');
     tabs[0].dispatchEvent(click);

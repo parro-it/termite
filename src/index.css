@@ -11,6 +11,9 @@ html, body {
   height: 100%;
 }
 
+html {
+  overflow: hidden;
+}
 
 .terminal {
   position: absolute;
@@ -28,4 +31,5 @@ html, body {
   position: absolute;
   top: 0;
   width: 100%;
+  overflow: hidden;
 }
