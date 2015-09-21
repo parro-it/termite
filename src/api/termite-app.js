@@ -1,59 +1,8 @@
+const menus = require('./menus');
 const tabs = require('./tabs');
 const commands = require('./commands');
 const config = require('./config');
 const EventEmitter = require('events').EventEmitter;
-
-const template = [{
-  label: 'File',
-  submenu: [{
-    label: 'New tab',
-    accelerator: 'CmdOrCtrl+T',
-    command: 'new-tab'
-  }, {
-    label: 'Exit',
-    accelerator: 'CmdOrCtrl+F10',
-    command: 'quit'
-  }]
-}];
-
-
-function setupMenus(menuTemplate, termiteApp) {
-  const globalShortcut = require('global-shortcut');
-  const Menu = require('menu');
-  const app = require('app');
-
-  const instrumentMenu = (menus) => {
-    menus.forEach(m => {
-      if (m.command) {
-        const handler = () => {
-          termiteApp.commands.execute(m.command);
-        };
-        m.click = handler;
-
-        if (m.accelerator) {
-          const shortcut = m.accelerator;
-          delete m.accelerator;
-
-          app.on('browser-window-focus', () => {
-            globalShortcut.register(shortcut, handler);
-          });
-
-          app.on('browser-window-blur', () => {
-            globalShortcut.register(shortcut, handler);
-          });
-        }
-      }
-
-      if (m.submenu) {
-        instrumentMenu(m.submenu);
-      }
-    });
-  };
-
-  instrumentMenu(menuTemplate);
-  const menu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(menu);
-}
 
 module.exports = Object.assign(new EventEmitter(), {
   window: null,
@@ -61,6 +10,7 @@ module.exports = Object.assign(new EventEmitter(), {
   tabs: tabs,
   commands: commands,
   config: config,
+  menus: menus,
 
   quit() {
     this.commands.execute('quit');
@@ -70,9 +20,12 @@ module.exports = Object.assign(new EventEmitter(), {
     this.tabs.init(this);
     this.commands.init(this);
     this.config.init(this);
+    this.menus.init(this);
     this.emit('api-init-done');
 
     this.packages = {};
+    this.packagesFolder = __dirname + '/../packages';
+
     this.packages.core = require('../packages/core')(this);
     this.packages.shell = require('../packages/shell')(this);
 
@@ -89,8 +42,6 @@ module.exports = Object.assign(new EventEmitter(), {
       resizable: true,
       icon: appIcon
     });
-
-    setupMenus(template, this);
 
     this.window.showUrl(__dirname + '/../main-window/index.html', () => {
       this.window.maximize();

@@ -7,5 +7,6 @@ module.exports = function init(app) {
   return {
     name: 'core',
     path: __dirname
+
   };
 };

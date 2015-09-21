@@ -1,0 +1,8 @@
+[{
+  label: 'Shell',
+  submenu: [{
+    label: 'New shell tab',
+    accelerator: 'CmdOrCtrl+T',
+    command: 'new-tab'
+  }]
+}]

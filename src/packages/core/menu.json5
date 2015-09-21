@@ -1,0 +1,8 @@
+[{
+  label: 'File',
+  submenu: [{
+    label: 'Exit',
+    accelerator: 'CmdOrCtrl+F10',
+    command: 'quit'
+  }]
+}]
