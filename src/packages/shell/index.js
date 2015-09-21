@@ -2,6 +2,9 @@ const ShellComponent = require('./shell-component');
 
 module.exports = function init(app) {
   app.config.on('preferences-loaded', () => {
+    const pref = app.packages.shell.preferences;
+    pref['user-css'] = (pref['user-css'] || '').replace(/~/g, app.config.configFolder);
+    console.log(pref['user-css'])
     app.commands.execute('new-tab');
   });
 
