@@ -67,14 +67,14 @@ module.exports = {
     this.tabs.init();
     this.commands.init();
 
-    require('./packages/core')(this);
-    require('./packages/shell')(this);
+    require('../packages/core')(this);
+    require('../packages/shell')(this);
   },
 
   start() {
     const window = require('electron-window');
 
-    const appIcon = __dirname + '/../resources/icon.png';
+    const appIcon = __dirname + '/../../resources/icon.png';
 
     this.window = window.createWindow({
       resizable: true,
@@ -83,7 +83,7 @@ module.exports = {
 
     setupMenus(template, this);
 
-    this.window.showUrl(__dirname + '/index.html', () => {
+    this.window.showUrl(__dirname + '/../main-window/index.html', () => {
       this.window.maximize();
     });
   }

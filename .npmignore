@@ -4,10 +4,6 @@ test
 *.sublime-project
 .gitignore
 .editorconfig
-
-
-rethinkdb_data
 private
-
 libapps
 

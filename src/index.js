@@ -1,6 +1,6 @@
 const app = require('app');
 const electronDebug = require('electron-debug');
-const termiteApp = require('./termite-app');
+const termiteApp = require('./api/termite-app');
 if (process.env.DEBUG) {
   electronDebug();
 }
