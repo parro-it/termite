@@ -33,3 +33,10 @@ html {
   width: 100%;
   overflow: hidden;
 }
+
+textarea {
+  position: absolute;
+  top: 40px;
+  height: -webkit-calc(100% - 40px);
+  width: 100%;
+}
