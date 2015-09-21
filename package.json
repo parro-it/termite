@@ -13,6 +13,7 @@
     "electron-debug": "^0.2.1",
     "electron-window": "^0.6.0",
     "is-electron-renderer": "^2.0.0",
+    "json5": "^0.4.0",
     "node-uuid": "^1.4.3",
     "pty.js": "^0.3.0"
   },

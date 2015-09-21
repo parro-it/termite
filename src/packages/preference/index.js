@@ -1,3 +1,4 @@
+/*
 const homedir = require('os').homedir;
 const join = require('path').join;
 const lib = global.lib;
@@ -35,4 +36,11 @@ module.exports = function init(app) {
   app.commands.register('new-tab', newShellTab);
 
   newShellTab();
+};
+*/
+module.exports = function init(app) {
+  return {
+    name: 'preference',
+    path: __dirname
+  };
 };

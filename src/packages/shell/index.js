@@ -1,9 +1,25 @@
 const ShellComponent = require('./shell-component');
 
 module.exports = function init(app) {
-  const newShellTab = () => app.tabs.add(new ShellComponent(app));
+  app.config.on('preferences-loaded', () => {
+    app.commands.execute('new-tab');
+  });
 
-  app.commands.register('new-tab', newShellTab);
+  const pkg = {
+    initializeTerminal(t) {
+      Object.keys(this.preferences).forEach(k => {
+        t.prefs_.set(k, this.preferences[k]);
+      });
+    },
 
-  newShellTab();
+    name: 'shell',
+    path: __dirname
+  };
+
+  app.commands.register('new-tab', () =>
+    app.tabs.add(new ShellComponent(app, pkg))
+  );
+
+
+  return pkg;
 };

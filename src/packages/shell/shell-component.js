@@ -3,7 +3,7 @@
 const pty = require('pty.js');
 const EventEmitter = require('events').EventEmitter;
 const hterm = global.hterm;
-const loadConfig = require('../../load-config');
+const lib = global.lib;
 
 function createDomElements(elm) {
   const stdin = document.createElement('input');
@@ -22,11 +22,10 @@ function createDomElements(elm) {
   };
 }
 
-function createTerminal(elms) {
-  const config = loadConfig();
-  hterm.defaultStorage = config.prefs;
+function createTerminal(elms, pkg) {
+  hterm.defaultStorage = new lib.Storage.Memory();
   const t = new hterm.Terminal();
-  config.load(t);
+  pkg.initializeTerminal(t);
 
   const termGui = new EventEmitter();
   termGui.write = data => {
@@ -99,13 +98,13 @@ function setupEvents(process, terminal) {
 
 
 class ShellComponent {
-  constructor() {
+  constructor(app, pkg) {
     this.element = document.createElement('main');
     this.process = createShellProcess();
     this.children = createDomElements(this.element);
 
     setImmediate(() => {
-      this.terminal = createTerminal(this.children);
+      this.terminal = createTerminal(this.children, pkg);
       setupEvents(this.process, this.terminal);
     });
   }

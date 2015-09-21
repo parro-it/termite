@@ -1,5 +1,7 @@
 const tabs = require('./tabs');
 const commands = require('./commands');
+const config = require('./config');
+const EventEmitter = require('events').EventEmitter;
 
 const template = [{
   label: 'File',
@@ -53,22 +55,29 @@ function setupMenus(menuTemplate, termiteApp) {
   Menu.setApplicationMenu(menu);
 }
 
-module.exports = {
+module.exports = Object.assign(new EventEmitter(), {
   window: null,
 
   tabs: tabs,
   commands: commands,
+  config: config,
 
   quit() {
     this.commands.execute('quit');
   },
 
   initRenderer() {
-    this.tabs.init();
-    this.commands.init();
+    this.tabs.init(this);
+    this.commands.init(this);
+    this.config.init(this);
+    this.emit('api-init-done');
 
-    require('../packages/core')(this);
-    require('../packages/shell')(this);
+    this.packages = {};
+    this.packages.core = require('../packages/core')(this);
+    this.packages.shell = require('../packages/shell')(this);
+
+    this.emit('packages-init-done');
+    setImmediate(() => this.emit('dom-available'));
   },
 
   start() {
@@ -87,4 +96,4 @@ module.exports = {
       this.window.maximize();
     });
   }
-};
+});
