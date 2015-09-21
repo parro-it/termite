@@ -23,7 +23,10 @@
     <script src="../deps/jquery.min.js"></script>
     <script src="../deps/jquery-ui.min.js"></script>
     <script src="../deps/chrome-tabs.js"></script>
-    <script>require('./ui')</script>
+    <script>
+      const app = require('./termite-app');
+      app.initRenderer();
+    </script>
 
   </body>
 </html>

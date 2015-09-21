@@ -28,6 +28,7 @@ class Tab {
 
 module.exports = {
   tabs: {},
+
   init() {
     $ = global.jQuery;
     chromeTabs = global.chromeTabs;
@@ -38,6 +39,7 @@ module.exports = {
       maxWidth: 160
     });
   },
+
   add(component) {
     const tab = new Tab(component);
     this.tabs[tab.id] = tab;

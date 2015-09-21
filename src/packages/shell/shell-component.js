@@ -3,7 +3,7 @@
 const pty = require('pty.js');
 const EventEmitter = require('events').EventEmitter;
 const hterm = global.hterm;
-const loadConfig = require('./load-config');
+const loadConfig = require('../../load-config');
 
 function createDomElements(elm) {
   const stdin = document.createElement('input');
@@ -23,10 +23,6 @@ function createDomElements(elm) {
 }
 
 function createTerminal(elms) {
-  console.log(elms.stdin)
-
-  console.log(elms.stdout)
-
   const config = loadConfig();
   hterm.defaultStorage = config.prefs;
   const t = new hterm.Terminal();
