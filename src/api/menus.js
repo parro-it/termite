@@ -45,20 +45,31 @@ module.exports = {
   menuTemplate: [],
   init(app) {
     const loadPackageMenus = packageName => {
-      const menuFile = join(app.packagesFolder, packageName, 'menu.json5-');
-      process.stdout.write(menuFile);
-      if (fs.existsSync(menuFile)) {
-        const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
-        for (const property in packageMenu) {
-          if (property in this.menuTemplate) {
-            packageMenu[property] = Object.assign(
-              this.menuTemplate[property],
-              packageMenu[property]
-            );
-          }
-        }
+      const pkg = app.packages[packageName];
+      const menuFile = join(pkg.path, 'menu.json5');
 
-        Object.assign(
+      if (fs.existsSync(menuFile)) {
+        process.stdout.write(menuFile);
+        const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
+        const merge = (obj1, obj2) => {
+          if (Array.isArray(obj1)) {
+            return obj1.concat(obj2);
+          }
+
+          for (const property in obj1) {
+            if (property in obj2 && typeof obj1[property] === 'object') {
+              obj2[property] = merge(obj1[property], obj2[property]);
+            }
+          }
+
+          return Object.assign(
+            obj1,
+            obj2
+          );
+        };
+
+
+        this.menuTemplate = merge(
           this.menuTemplate,
           packageMenu
         );
