@@ -1,6 +1,12 @@
 # termite
 
-Electron terminal emulator
+Termite is a vt-100 terminal emulator written in javascript and powered by electron.
+
+![termite](media/termite.png)
+
+
+## Binaries
+
 
 ## Installation
 
@@ -9,6 +15,9 @@ npm install -g termite
 ```
 
 ## Credits
+
+* shell is implemented using chromium hterm
+* sublime text for inspiration
 
 ## License
 The MIT License (MIT)
