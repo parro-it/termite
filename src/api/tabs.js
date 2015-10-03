@@ -89,7 +89,7 @@ module.exports = {
     });
   },
 
-  close(tabId) {
+  close(/* tabId */) {
 
   },
 

@@ -38,7 +38,7 @@ module.exports = function init(app) {
   newShellTab();
 };
 */
-module.exports = function init(app) {
+module.exports = function init(/* app */) {
   return {
     name: 'preference',
     path: __dirname

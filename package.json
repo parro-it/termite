@@ -1,14 +1,10 @@
 {
   "name": "termite",
   "version": "1.0.0",
-  "description": "",
+  "description": "Electron terminal emulator",
   "main": "src/index.js",
-  "scripts": {
-    "lint": "eslint *.js",
-    "start": "electron src/index.js"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "andrea@parro.it",
+  "license": "mit",
   "dependencies": {
     "electron-debug": "^0.2.1",
     "electron-window": "^0.6.0",
@@ -17,26 +13,28 @@
     "node-uuid": "^1.4.3",
     "pty.js": "^0.3.0"
   },
+
+  "scripts": {
+    "start": "electron .",
+    "test": "test-collider",
+    "collider": "collider",
+    "debug": "debug",
+    "cover": "cover-collider",
+    "watch": "watch-collider",
+    "release-minor": "release-minor",
+    "release-patch": "release-patch",
+    "lint": "lint",
+    "prepublish": "lint"
+  },
   "eslintConfig": {
-    "extends": "eslint-config-airbnb",
-    "plugins": [
-      "babel"
-    ],
-    "rules": {
-      "comma-dangle": 0,
-      "no-undef": 1
-    }
+    "extends": "devenv"
   },
   "babel": {
     "stage": 4
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.3",
-    "electron-prebuilt": "^0.33.0",
     "electron-rebuild": "^1.0.0",
-    "eslint": "^1.4.3",
-    "eslint-config-airbnb": "0.0.8",
-    "eslint-plugin-babel": "^2.1.1",
-    "eslint-plugin-react": "^3.4.1"
+    "esenv": "^1.1.0",
+    "rum-node": "^1.12.1"
   }
 }
