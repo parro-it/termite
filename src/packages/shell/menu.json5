@@ -1,5 +1,5 @@
 [{
-  label: 'Shell',
+  label: 'File',
   submenu: [{
     label: 'New shell tab',
     accelerator: 'CmdOrCtrl+T',
