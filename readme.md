@@ -2,7 +2,7 @@
 
 Termite is a vt-100 terminal emulator written in javascript and powered by electron.
 
-![termite](media/termite.png)
+![termite](media/termite.gif)
 
 
 ## Binaries
