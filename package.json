@@ -6,6 +6,7 @@
   "author": "andrea@parro.it",
   "license": "mit",
   "dependencies": {
+    "command-palette": "^1.1.1",
     "electron-debug": "^0.2.1",
     "electron-window": "^0.6.0",
     "is-electron-renderer": "^2.0.0",
@@ -25,8 +26,7 @@
     "lint": "lint",
     "prepublish": "lint",
     "deb": "rm -rf app && cp -r dist/termite-linux-x64 app && node-deb -u termite -g termite -v 1.0.1 app",
-    "pkg": "electron-packager . termite --platform=linux --arch=x64 --out=dist --overwrite --version=0.33.4 --ignore='dist|media|libapss|.*\\.deb'"
-
+    "pkg": "electron-packager . termite --platform=linux --arch=x64 --out=dist --overwrite --version=0.33.4 --ignore='app|dist|media|libapss|.*\\.deb'"
   },
   "eslintConfig": {
     "extends": "devenv"

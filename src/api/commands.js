@@ -5,7 +5,9 @@ module.exports = {
   register(command, handler) {
     commands[command] = handler;
   },
-
+  all() {
+    return Object.keys(commands);
+  },
   init() {
     const ipc = require('ipc');
     ipc.on('exec-command', command => this.execute(command));

@@ -27,6 +27,7 @@ module.exports = Object.assign(new EventEmitter(), {
     this.packagesFolder = __dirname + '/../packages';
 
     this.packages.core = require('../packages/core')(this);
+    this.packages.commandManager = require('../packages/command-manager')(this);
     this.packages.shell = require('../packages/shell')(this);
     this.packages.preference = require('../packages/preference')(this);
 

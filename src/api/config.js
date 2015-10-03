@@ -55,6 +55,8 @@ const config = Object.assign(new EventEmitter(), {
             })(pkg);
           });
         });
+
+        this.emit('all-preferences-loaded');
       } catch (err) {
         process.stderr.write(err.stack);
       }
