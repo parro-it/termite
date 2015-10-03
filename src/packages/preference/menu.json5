@@ -1,0 +1,7 @@
+[{
+  label: 'Preference',
+  submenu: [{
+    label: 'Default',
+    command: 'default-preferences'
+  }]
+}]

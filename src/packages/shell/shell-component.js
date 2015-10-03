@@ -55,14 +55,7 @@ function createTerminal(elms, pkg) {
       termGui.emit('resize', columns, rows);
     };
   };
-/*
-  const closeTab = elms.tab.querySelector('.chrome-tab-close');
-  closeTab.addEventListener('click', () => {
-    elms.stdin.remove();
-    elms.stdout.remove();
-    termGui.emit('closed');
-  });
-*/
+
 
   t.keyboard.installKeyboard(elms.stdin);
   t.decorate(elms.stdout);

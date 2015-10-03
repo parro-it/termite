@@ -1,8 +1,9 @@
 'use strict';
 
 class PreferenceComponent {
-  constructor() {
-    this.element = document.createElement('textarea');
+  constructor(app) {
+    this.element = document.createElement('pre');
+    this.element.innerText = JSON.stringify(app.config.defaultPreferences, null, 4);
   }
 
   close() {

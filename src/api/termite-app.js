@@ -28,6 +28,7 @@ module.exports = Object.assign(new EventEmitter(), {
 
     this.packages.core = require('../packages/core')(this);
     this.packages.shell = require('../packages/shell')(this);
+    this.packages.preference = require('../packages/preference')(this);
 
     this.emit('packages-init-done');
     setImmediate(() => this.emit('dom-available'));

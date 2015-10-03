@@ -38,8 +38,9 @@ const config = Object.assign(new EventEmitter(), {
           const pkg = app.packages[packageName];
           process.stdout.write(packageName + ' initPackageDefaultsPreferences...');
           pkg.defaultPreferences = this.initPackageDefaultsPreferences(pkg);
-          process.stdout.write('done.\n');
+          this.defaultPreferences[packageName] = pkg.defaultPreferences;
 
+          process.stdout.write('done.\n');
           process.stdout.write(packageName + ' loadPreferences...');
 
           pkg.preferences = Object.assign(
