@@ -65,3 +65,4 @@ dist_test
 
 libapps
 
+*.deb
