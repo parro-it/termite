@@ -6,4 +6,7 @@ test
 .editorconfig
 private
 libapps
-
+media
+libapps
+dist
+*.deb
