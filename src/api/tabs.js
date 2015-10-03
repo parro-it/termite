@@ -21,6 +21,10 @@ class Tab {
     this.id = uuid.v4();
   }
 
+  close() {
+    this.component.close();
+  }
+
   createElement() {
     this.element = addTabElement('__' + this.id.replace(/-/g, '_'));
   }
@@ -29,7 +33,7 @@ class Tab {
 module.exports = {
   tabs: {},
 
-  init() {
+  init(app) {
     $ = global.jQuery;
     chromeTabs = global.chromeTabs;
     $tabsShell = $('.chrome-tabs-shell');
@@ -38,6 +42,30 @@ module.exports = {
       minWidth: 45,
       maxWidth: 160
     });
+
+    app.on('api-init-done', () => {
+      app.commands.register('close-current', () => {
+        const current = this.current();
+        current.close();
+        const closeTab = current.element.querySelector('.chrome-tab-close');
+        const click = new Event('click');
+        closeTab.dispatchEvent(click);
+        this.activateFirstTab();
+      });
+    });
+  },
+
+  current() {
+    const currentTabElm = document.querySelector('.chrome-tab-current');
+
+    if (currentTabElm === null) {
+      return null;
+    }
+
+    const tabId = currentTabElm.id;
+
+    const currentTab = this.tabs[tabId.slice(2).replace(/_/g, '-')];
+    return currentTab;
   },
 
   add(component) {
@@ -48,16 +76,10 @@ module.exports = {
     document.body.appendChild(component.element);
 
     const deactivateCurrentTab = () => {
-      const currentTabElm = document.querySelector('.chrome-tab-current');
-
-      if (currentTabElm === null) {
-        return;
+      const currentTab = this.current();
+      if (currentTab) {
+        currentTab.component.deactivate();
       }
-
-      const tabId = currentTabElm.id;
-
-      const currentTab = this.tabs[tabId.slice(2).replace(/_/g, '-')];
-      currentTab.component.deactivate();
     };
 
     const activateTab = () => {
@@ -76,22 +98,28 @@ module.exports = {
 
     const closeTab = tab.element.querySelector('.chrome-tab-close');
     closeTab.addEventListener('click', () => {
-      component.close();
-
-      const tabs = document.querySelectorAll('.chrome-tab');
-      if (tabs.length === 0) {
-        return;
-      }
-      const click = new Event('click');
-      tabs[0].dispatchEvent(click);
-      const mouseup = new Event('mouseup');
-      tabs[0].dispatchEvent(mouseup);
+      tab.close();
+      this.activateFirstTab();
     });
   },
 
-  close(/* tabId */) {
-
+  activateFirstTab() {
+    const tabs = document.querySelectorAll('.chrome-tab');
+    if (tabs.length === 0) {
+      return;
+    }
+    const click = new Event('click');
+    tabs[0].dispatchEvent(click);
+    const mouseup = new Event('mouseup');
+    tabs[0].dispatchEvent(mouseup);
   },
+
+  close(tabId) {
+    const tab = this.tabs[tabId];
+    tab.close();
+    this.activateFirstTab();
+  },
+
 
   all() {
 

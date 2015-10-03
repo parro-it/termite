@@ -2,8 +2,12 @@
   label: 'File',
   submenu: [{
     label: 'Exit',
-    accelerator: 'CmdOrCtrl+F10',
+    accelerator: 'CmdOrCtrl+Q',
     command: 'quit'
+  }, {
+    label: 'Close current shell',
+    accelerator: 'CmdOrCtrl+D',
+    command: 'close-current'
   }]
 }, {
   label: 'Edit',
