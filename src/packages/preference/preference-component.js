@@ -2,8 +2,11 @@
 
 class PreferenceComponent {
   constructor(app) {
-    this.element = document.createElement('pre');
-    this.element.innerText = JSON.stringify(app.config.defaultPreferences, null, 4);
+    this.element = document.createElement('main');
+    this.element.classList.add('preference');
+    const pre = document.createElement('pre');
+    pre.innerText = JSON.stringify(app.config.defaultPreferences, null, 4);
+    this.element.appendChild(pre);
   }
 
   close() {

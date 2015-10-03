@@ -22,6 +22,22 @@ html {
   width: 100%;
 }
 
+.preference {
+  display: block;
+  position: absolute;
+  top: 40px;
+  height: -webkit-calc(100% - 40px);
+  overflow: auto;
+  width: 100%;
+}
+
+.preference pre {
+  font-family: monospace;
+  font-size: 14;
+
+
+}
+
 
 .cursor-node[focus="false"] {
     box-sizing: border-box;
