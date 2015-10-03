@@ -1,6 +1,6 @@
 {
   "name": "termite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Electron terminal emulator",
   "main": "src/index.js",
   "author": "andrea@parro.it",
@@ -24,7 +24,6 @@
     "release-patch": "release-patch",
     "lint": "lint",
     "prepublish": "lint",
-
     "deb": "node-deb -u termite -g termite -v 1.0.1 dist/termite-linux-x64"
   },
   "eslintConfig": {
