@@ -10,10 +10,8 @@ function setupMenus(menuTemplate, termiteApp) {
 
   const instrumentMenu = (menus) => {
     menus.forEach(m => {
-
       if (m.command) {
         const handler = () => {
-          console.log('execute ' + m.command);
           termiteApp.commands.execute(m.command);
         };
         m.click = handler;
@@ -21,8 +19,6 @@ function setupMenus(menuTemplate, termiteApp) {
         if (m.accelerator) {
           const shortcut = m.accelerator;
           delete m.accelerator;
-          console.log('shortcut ' + shortcut);
-          console.log('command ' + m.command);
           app.on('browser-window-focus', () => {
             globalShortcut.register(shortcut, handler);
           });
