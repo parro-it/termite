@@ -40,6 +40,11 @@ function setupMenus(menuTemplate, termiteApp) {
   instrumentMenu(menuTemplate);
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
+
+  if (process.env.DEBUG) {
+    const electronDebug = require('electron-debug');
+    electronDebug();
+  }
 }
 
 module.exports = {
