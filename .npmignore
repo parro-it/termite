@@ -1,12 +1,3 @@
-es6
-dist_test
-test
-*.sublime-project
-.gitignore
-.editorconfig
-private
-libapps
-media
-libapps
-dist
-*.deb
+
+app
+

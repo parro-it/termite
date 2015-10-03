@@ -24,7 +24,9 @@
     "release-patch": "release-patch",
     "lint": "lint",
     "prepublish": "lint",
-    "deb": "node-deb -u termite -g termite -v 1.0.1 dist/termite-linux-x64"
+    "deb": "rm -rf app && cp -r dist/termite-linux-x64 app && node-deb -u termite -g termite -v 1.0.1 app",
+    "pkg": "electron-packager . termite --platform=linux --arch=x64 --out=dist --overwrite --version=0.33.4 --ignore='dist|media|libapss|.*\\.deb'"
+
   },
   "eslintConfig": {
     "extends": "devenv"
@@ -33,7 +35,7 @@
     "stage": 4
   },
   "node_deb": {
-    "start_script": "electron ."
+    "start_script": "app/termite"
   },
   "devDependencies": {
     "electron-builder": "^2.0.0",
