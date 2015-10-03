@@ -24,6 +24,8 @@ Run termite after install and have fun!
 * sublime text for inspiration
 
 ## License
+
 The MIT License (MIT)
+
 Copyright (c) 2015 Andrea Parodi
 
