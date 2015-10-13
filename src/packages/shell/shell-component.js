@@ -7,6 +7,7 @@ const lib = global.lib;
 
 function createDomElements(elm) {
   const stdin = document.createElement('input');
+
   stdin.classList.add('stdin');
   stdin.type = 'text';
 

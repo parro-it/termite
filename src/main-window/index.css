@@ -17,7 +17,7 @@ html {
 
 .terminal {
   position: absolute;
-  top: 40px;
+  top: 10px;
   height: -webkit-calc(100% - 40px);
   width: 100%;
 }
@@ -64,4 +64,48 @@ textarea {
   position: absolute;
   top:50px;
   right:20px;
+}
+
+.chrome-tabs-shell {
+    padding: 0;
+}
+
+.chrome-shell-bottom-bar {
+    display: none;
+}
+
+.chrome-tab-curves {
+    display: none !important;
+}
+.chrome-tabs {
+  top: -1px !important;
+}
+
+.chrome-tab {
+    margin: 1px !important;
+    padding: 0;
+    left: 0;
+    right: 0;
+    width: 190px !important;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 20px !important;
+}
+
+.chrome-tab-close {
+    right: 7px !important;
+    top: 3px !important;
+}
+
+.chrome-tabs-shell {
+    background-image: linear-gradient(#002B36, #002B36) !important;
+}
+
+input.stdin {
+    font-size: 3px;
+    background-color: transparent;
+    position: absolute;
+    border: none;
+    box-shadow: none;
+    outline: none;
 }
