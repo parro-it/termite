@@ -18,7 +18,7 @@ function setupMenus(menuTemplate, termiteApp) {
 
         if (m.accelerator) {
           const shortcut = m.accelerator;
-          delete m.accelerator;
+          // delete m.accelerator;
           app.on('browser-window-focus', () => {
             globalShortcut.register(shortcut, handler);
           });
