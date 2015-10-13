@@ -5,8 +5,6 @@ module.exports = function init(app) {
     win.close();
   });
 
-
-
   return {
     name: 'core',
     path: __dirname

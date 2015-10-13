@@ -4,8 +4,11 @@
 		{
 			"path": "."
 		},
-    {
-      "path": "~/.termite"
-    }
+		{
+			"path": "/Users/parroit/.termite"
+		},
+		{
+			"path": "/Users/parroit/Desktop/repos/command-palette"
+		}
 	]
 }
