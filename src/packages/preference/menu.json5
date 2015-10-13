@@ -1,7 +1,6 @@
-[{
-  label: 'Preference',
-  submenu: [{
-    label: 'Default',
+{
+  Tools: [{
+    label: 'Default Preference',
     command: 'default-preferences'
   }]
-}]
+}

@@ -1,8 +1,7 @@
-[{
-  label: 'Shell',
-  submenu: [{
+{
+  File: [{
     label: 'New shell tab',
     accelerator: 'CmdOrCtrl+T',
     command: 'new-tab'
   }]
-}]
+}

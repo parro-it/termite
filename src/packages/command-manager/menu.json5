@@ -1,8 +1,7 @@
-[{
-  label: 'Commands',
-  submenu: [{
+{
+  Tools: [{
     label: 'Command Palette',
     accelerator: 'CmdOrCtrl+Shift+C',
     command: 'command-palette'
   }]
-}]
+}

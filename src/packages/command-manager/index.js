@@ -18,6 +18,7 @@ module.exports = function init(app) {
 
         p.appendTo(document.body);
         p.show();
+
       })();
     `);
   });
