@@ -58,3 +58,10 @@ textarea {
   height: -webkit-calc(100% - 40px);
   width: 100%;
 }
+
+.command-palette {
+  z-index:1111;
+  position: absolute;
+  top:50px;
+  right:20px;
+}

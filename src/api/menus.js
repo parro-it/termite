@@ -55,7 +55,7 @@ module.exports = {
       const menuFile = join(pkg.path, 'menu.json5');
 
       if (fs.existsSync(menuFile)) {
-        process.stdout.write(menuFile);
+        // process.stdout.write(menuFile);
         const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
         const merge = (obj1, obj2) => {
           if (Array.isArray(obj1)) {
@@ -84,7 +84,7 @@ module.exports = {
 
     app.on('packages-init-done', () => {
       Object.keys(app.packages).forEach(loadPackageMenus);
-      process.stdout.write(JSON5.stringify(this.menuTemplate));
+      // process.stdout.write(JSON5.stringify(this.menuTemplate));
       setupMenus(this.menuTemplate, app);
     });
   }
