@@ -42,7 +42,9 @@ module.exports = Object.assign(new EventEmitter(), {
 
     this.window = window.createWindow({
       resizable: true,
-      icon: appIcon
+      icon: appIcon,
+      'accept-first-mouse': true,
+      'title-bar-style': 'hidden'
     });
 
     this.window.showUrl(__dirname + '/../main-window/index.html', () => {

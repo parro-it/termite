@@ -23,7 +23,7 @@ function createDomElements(elm) {
   };
 }
 
-function createTerminal(elms, pkg) {
+function createTerminal(elms, pkg, app) {
   hterm.defaultStorage = new lib.Storage.Memory();
   const t = new hterm.Terminal();
   pkg.initializeTerminal(t);
@@ -34,8 +34,7 @@ function createTerminal(elms, pkg) {
   };
 
   t.setWindowTitle = title => {
-    const elm = document.querySelector('.chrome-tab-current .chrome-tab-title');
-    elm.textContent = title;
+    app.tabs.current().setTitle(title);
   };
 
   t.onTerminalReady = () => {
@@ -98,7 +97,7 @@ class ShellComponent {
     this.children = createDomElements(this.element);
 
     setImmediate(() => {
-      this.terminal = createTerminal(this.children, pkg);
+      this.terminal = createTerminal(this.children, pkg, app);
       setupEvents(this.process, this.terminal);
     });
   }

@@ -109,3 +109,7 @@ input.stdin {
     box-shadow: none;
     outline: none;
 }
+
+main.window-content {
+    height: -webkit-calc(100% - 70px);
+}

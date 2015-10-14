@@ -1,32 +1,53 @@
 'use strict';
 
-let $;
-let chromeTabs;
-let $tabsShell;
 const uuid = require('node-uuid');
 
-
-function addTabElement(id) {
-  chromeTabs.addNewTab($tabsShell, {
-    title: ''
-  });
-  const elm = document.querySelector('.chrome-tab-current');
-  elm.id = id;
-  return elm;
-}
-
 class Tab {
-  constructor(component) {
+  constructor(component, pkg) {
+    this.tabsShell = pkg.tabsShell;
+    this.pkg = pkg;
     this.component = component;
     this.id = uuid.v4();
   }
 
   close() {
     this.component.close();
+    this.element.remove();
+  }
+
+  activate() {
+    const currentlyActive = this.pkg.current();
+    if (currentlyActive) {
+      currentlyActive.element.classList.remove('active');
+      currentlyActive.component.deactivate();
+    }
+    this.component.activate();
+    this.element.classList.add('active');
+  }
+
+  setTitle(text) {
+    this.title.textContent = text;
   }
 
   createElement() {
-    this.element = addTabElement('__' + this.id.replace(/-/g, '_'));
+    const elm = document.createElement('div');
+    elm.id = '__' + this.id.replace(/-/g, '_');
+    elm.classList.add('tab-item');
+
+
+    const close = document.createElement('span');
+    close.classList.add('icon');
+    close.classList.add('icon-cancel');
+    close.classList.add('icon-close-tab');
+    elm.appendChild(close);
+
+    const title = document.createElement('span');
+    title.classList.add('title');
+    elm.appendChild(title);
+    this.title = title;
+
+    this.tabsShell.appendChild(elm);
+    this.element = elm;
   }
 }
 
@@ -34,20 +55,13 @@ module.exports = {
   tabs: {},
 
   init(app) {
-    $ = global.jQuery;
-    chromeTabs = global.chromeTabs;
-    $tabsShell = $('.chrome-tabs-shell');
-    chromeTabs.init({
-      $shell: $tabsShell,
-      minWidth: 45,
-      maxWidth: 160
-    });
+    this.tabsShell = document.querySelector('.tab-group');
 
     app.on('api-init-done', () => {
       app.commands.register('close-current', () => {
         const current = this.current();
         current.close();
-        const closeTab = current.element.querySelector('.chrome-tab-close');
+        const closeTab = this.tabsShell.querySelector('.tab-item.active .icon-close-tab');
         const click = new Event('click');
         closeTab.dispatchEvent(click);
         this.activateFirstTab();
@@ -56,7 +70,7 @@ module.exports = {
   },
 
   current() {
-    const currentTabElm = document.querySelector('.chrome-tab-current');
+    const currentTabElm = this.tabsShell.querySelector('.tab-item.active');
 
     if (currentTabElm === null) {
       return null;
@@ -69,34 +83,23 @@ module.exports = {
   },
 
   add(component) {
-    const tab = new Tab(component);
+    const tab = new Tab(component, this);
     this.tabs[tab.id] = tab;
 
     component.tabId = tab.id;
-    document.body.appendChild(component.element);
+    const main = document.querySelector('main.window-content');
+    main.appendChild(component.element);
 
-    const deactivateCurrentTab = () => {
-      const currentTab = this.current();
-      if (currentTab) {
-        currentTab.component.deactivate();
-      }
-    };
 
-    const activateTab = () => {
-      component.activate();
-    };
-
-    deactivateCurrentTab();
     tab.createElement();
     component.element.id = tab.element.id + '_component';
-    activateTab();
+    tab.activate();
 
     tab.element.addEventListener('mouseup', () => {
-      deactivateCurrentTab();
-      activateTab();
+      tab.activate();
     });
 
-    const closeTab = tab.element.querySelector('.chrome-tab-close');
+    const closeTab = tab.element.querySelector('.icon-close-tab');
     closeTab.addEventListener('click', () => {
       tab.close();
       this.activateFirstTab();
@@ -104,14 +107,10 @@ module.exports = {
   },
 
   activateFirstTab() {
-    const tabs = document.querySelectorAll('.chrome-tab');
-    if (tabs.length === 0) {
+    if (this.tabs.length === 0) {
       return;
     }
-    const click = new Event('click');
-    tabs[0].dispatchEvent(click);
-    const mouseup = new Event('mouseup');
-    tabs[0].dispatchEvent(mouseup);
+    this.tabs[Object.keys(this.tabs)[0]].activate();
   },
 
   close(tabId) {
@@ -122,6 +121,6 @@ module.exports = {
 
 
   all() {
-
+    return this.tabs;
   }
 };

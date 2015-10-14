@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>termite</title>
+    <link rel="stylesheet" href="../../deps/photon-0.1.1-dist/css/photon.css">
     <link rel="stylesheet" href="../../deps/chrome-tabs.css">
     <link rel="stylesheet" href="../../deps/chrome-tabs-dark-theme.css">
 
@@ -11,18 +12,26 @@
   </head>
   <body>
 
+    <header class="toolbar toolbar-header">
+      <h1 class="title">Header</h1>
+    </header>
 
-    <div class="chrome-tabs-shell chrome-tabs-dark-theme">
-      <div class="chrome-tabs">
-      </div>
-      <div class="chrome-shell-bottom-bar"></div>
-    </div>
+    <nav class="tab-group">
+
+    </nav>
+
+    <main class="window-content">
+
+    </main>
+
+    <footer class="toolbar toolbar-footer">
+      <h1 class="title">Footer</h1>
+    </footer>
+
 
 
     <script src="../../deps/hterm_all.js"></script>
-    <script src="../../deps/jquery.min.js"></script>
-    <script src="../../deps/jquery-ui.min.js"></script>
-    <script src="../../deps/chrome-tabs.js"></script>
+
     <script>
       const app = require('../api/termite-app');
       app.initRenderer();
