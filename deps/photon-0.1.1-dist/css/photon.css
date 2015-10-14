@@ -515,6 +515,7 @@ h6 {
 
 .toolbar-header {
   border-bottom: 1px solid #c2c0c2;
+  -webkit-app-region: drag;
 }
 .toolbar-header .title {
   margin-top: 1px;

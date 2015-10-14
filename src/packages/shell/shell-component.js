@@ -59,6 +59,18 @@ function createTerminal(elms, pkg, app) {
 
   t.keyboard.installKeyboard(elms.stdin);
   t.decorate(elms.stdout);
+
+  setTimeout(() => {
+    const cssLink = document.createElement('style');
+    cssLink.textContent = `
+      x-screen {
+        overflow-y: auto !important;
+      }
+    `;
+
+    elms.stdout.querySelector('iframe').contentDocument.body.appendChild(cssLink);
+  });
+
   return termGui;
 }
 
