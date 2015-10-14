@@ -31,7 +31,23 @@ module.exports = Object.assign(new EventEmitter(), {
     this.packages.shell = require('../packages/shell')(this);
     this.packages.preference = require('../packages/preference')(this);
 
+    const BrowserWindow = require('remote').require('browser-window');
+
+    document.querySelector('.titlebar-close').addEventListener('click', () =>{
+      window.close();
+    });
+
+    document.querySelector('.titlebar-minimize').addEventListener('click', () =>{
+      BrowserWindow.getFocusedWindow().minimize();
+    });
+
+    document.querySelector('.titlebar-fullscreen').addEventListener('click', () =>{
+      const win = BrowserWindow.getFocusedWindow();
+      win.setFullScreen(!win.isFullScreen());
+    });
+
     this.emit('packages-init-done');
+
     setImmediate(() => this.emit('dom-available'));
   },
 
