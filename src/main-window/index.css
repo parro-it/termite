@@ -74,6 +74,7 @@ main.window-content {
 }
 
 .titlebar {
+  position: absolute;
   padding: 0 3px;
   -webkit-app-region: no-drag;
 }
