@@ -12,6 +12,7 @@
     "is-electron-renderer": "^2.0.0",
     "json5": "^0.4.0",
     "node-uuid": "^1.4.3",
+    "plugin-loader": "0.0.2",
     "pty.js": "^0.3.0"
   },
   "scripts": {

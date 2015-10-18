@@ -3,8 +3,10 @@ const tabs = require('./tabs');
 const commands = require('./commands');
 const config = require('./config');
 const EventEmitter = require('events').EventEmitter;
+const PluginLoader = require('plugin-loader').PluginLoader;
 
 module.exports = Object.assign(new EventEmitter(), {
+  name: 'termite',
   window: null,
 
   tabs: tabs,
@@ -49,6 +51,13 @@ module.exports = Object.assign(new EventEmitter(), {
     this.emit('packages-init-done');
 
     setImmediate(() => this.emit('dom-available'));
+    global.termite = this;
+    const loader = new PluginLoader([this.config.configFolder + '/plugins/node_modules']);
+    loader.on('pluginLoaded', (pluginName, plugin) => {
+      const pluginResult = plugin(this);
+      this.packages[pluginResult.name] = pluginResult;
+    });
+    loader.discover();
   },
 
   start() {
