@@ -1,6 +1,0 @@
-{
-  Tools: [{
-    label: 'Default Preference',
-    command: 'default-preferences'
-  }]
-}

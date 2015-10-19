@@ -28,11 +28,6 @@ module.exports = Object.assign(new EventEmitter(), {
     this.packages = {};
     this.packagesFolder = __dirname + '/../packages';
 
-    this.packages.core = require('../packages/core')(this);
-    this.packages.commandManager = require('../packages/command-manager')(this);
-    this.packages.shell = require('../packages/shell')(this);
-    this.packages.preference = require('../packages/preference')(this);
-
     const BrowserWindow = require('remote').require('browser-window');
 
     document.querySelector('.titlebar-close').addEventListener('click', () =>{
@@ -48,14 +43,18 @@ module.exports = Object.assign(new EventEmitter(), {
       win.setFullScreen(!win.isFullScreen());
     });
 
-    this.emit('packages-init-done');
-
     setImmediate(() => this.emit('dom-available'));
     global.termite = this;
     const loader = new PluginLoader([this.config.configFolder + '/plugins/node_modules']);
     loader.on('pluginLoaded', (pluginName, plugin) => {
       const pluginResult = plugin(this);
       this.packages[pluginResult.name] = pluginResult;
+    });
+    loader.on('error', err => {
+      alert('An error occurred while loading plugins:\n' +err.stack);
+    });
+    loader.on('allPluginsLoaded', () => {
+      this.emit('packages-init-done');
     });
     loader.discover();
   },
@@ -69,7 +68,7 @@ module.exports = Object.assign(new EventEmitter(), {
       resizable: true,
       icon: appIcon,
       'accept-first-mouse': true,
-      frame: false
+      // frame: false
     });
 
     this.window.showUrl(__dirname + '/../main-window/index.html', () => {

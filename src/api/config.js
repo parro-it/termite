@@ -8,7 +8,7 @@ const JSON5 = require('json5');
 const config = Object.assign(new EventEmitter(), {
   initPackageDefaultsPreferences(pkg) {
     const configFile = join(this.configFolder, pkg.name + '.json5');
-    const defaultsConfigFile = join(__dirname + `/../packages/${pkg.name}/default-preferences.json5`);
+    const defaultsConfigFile = join(`${pkg.path}/default-preferences.json5`);
     pkg.configFile = configFile;
 
 
@@ -25,15 +25,17 @@ const config = Object.assign(new EventEmitter(), {
   },
 
   loadPreferences(configFile) {
-    return JSON5.parse(fs.readFileSync(configFile));
+    if (fs.existsSync(configFile)) {
+      return JSON5.parse(fs.readFileSync(configFile));
+    }
+    return {};
   },
 
   init(app) {
     this.defaultPreferences = {};
+    this.configFolder = join(homedir(), '.termite');
     app.on('packages-init-done', () => {
       try {
-        this.configFolder = join(homedir(), '.termite');
-
         Object.keys(app.packages).forEach(packageName => {
           const pkg = app.packages[packageName];
           process.stdout.write(packageName + ' initPackageDefaultsPreferences...');
