@@ -13,7 +13,7 @@ module.exports = {
     ipc.on('exec-command', command => this.execute(command));
   },
 
-  execute(command) {
+  execute(command, arg) {
     const isRenderer = require('is-electron-renderer');
 
     if (!isRenderer) {
@@ -24,7 +24,7 @@ module.exports = {
       }
       win.webContents.send('exec-command', command);
     } else {
-      commands[command]();
+      commands[command](arg);
     }
   }
 };

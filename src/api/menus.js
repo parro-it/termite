@@ -59,7 +59,6 @@ module.exports = {
     const mergePackageMenus = packageName => {
       const pkg = app.packages[packageName];
       const menuFile = join(pkg.path, 'menu.json5');
-console.log({menuFile})
       if (fs.existsSync(menuFile)) {
         const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
         merge(appMenu, packageMenu);

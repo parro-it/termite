@@ -25,10 +25,23 @@ module.exports = Object.assign(new EventEmitter(), {
     this.menus.init(this);
     this.emit('api-init-done');
 
+
     this.packages = {};
     this.packagesFolder = __dirname + '/../packages';
 
     const BrowserWindow = require('remote').require('browser-window');
+
+    this.commands.register('inject-js', code => {
+      const script = document.createElement('script');
+      script.textContent = code;
+      document.body.appendChild(script);
+    });
+
+    this.commands.register('inject-script', path => {
+      const script = document.createElement('script');
+      script.src = path;
+      document.body.appendChild(script);
+    });
 
     document.querySelector('.titlebar-close').addEventListener('click', () =>{
       window.close();
@@ -51,11 +64,12 @@ module.exports = Object.assign(new EventEmitter(), {
       this.packages[pluginResult.name] = pluginResult;
     });
     loader.on('error', err => {
-      alert('An error occurred while loading plugins:\n' +err.stack);
+      alert('An error occurred while loading plugins:\n' + err.stack);
     });
     loader.on('allPluginsLoaded', () => {
       this.emit('packages-init-done');
     });
+
     loader.discover();
   },
 
@@ -68,7 +82,7 @@ module.exports = Object.assign(new EventEmitter(), {
       resizable: true,
       icon: appIcon,
       'accept-first-mouse': true,
-      // frame: false
+      frame: false
     });
 
     this.window.showUrl(__dirname + '/../main-window/index.html', () => {
