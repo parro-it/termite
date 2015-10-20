@@ -15,4 +15,6 @@ app.on('window-all-closed', function onWindowAllClosed() {
   }
 });
 
-
+process.on('uncaughtException', function(err) {
+  console.log('Uncaught exception: \n\n' + err.stack);
+});
