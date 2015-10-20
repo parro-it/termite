@@ -8,6 +8,8 @@ function setupMenus(menuTemplate, termiteApp) {
   const Menu = remote.require('menu');
   const app = remote.require('app');
 
+  globalShortcut.unregisterAll();
+
   const instrumentMenu = (menus) => {
     menus.forEach(m => {
       if (m.command) {

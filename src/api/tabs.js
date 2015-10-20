@@ -62,9 +62,11 @@ module.exports = {
         const current = this.current();
         current.close();
         const closeTab = this.tabsShell.querySelector('.tab-item.active .icon-close-tab');
-        const click = new Event('click');
-        closeTab.dispatchEvent(click);
-        this.activateFirstTab();
+
+        if (closeTab) {
+          const click = new Event('click');
+          closeTab.dispatchEvent(click);
+        }
       });
     });
   },
@@ -101,8 +103,8 @@ module.exports = {
 
     const closeTab = tab.element.querySelector('.icon-close-tab');
     closeTab.addEventListener('click', () => {
-      tab.close();
       this.activateFirstTab();
+      tab.close();
     });
   },
 
