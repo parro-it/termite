@@ -7,6 +7,7 @@ function setupMenus(menuTemplate, termiteApp) {
   const globalShortcut = remote.require('global-shortcut');
   const Menu = remote.require('menu');
   const app = remote.require('app');
+  const BrowserWindow = remote.require('browser-window');
 
   globalShortcut.unregisterAll();
 
@@ -51,7 +52,10 @@ function setupMenus(menuTemplate, termiteApp) {
       menuItem.textContent = m.label;
       otherPlatformMenu.appendChild(menuItem);
       const menu = Menu.buildFromTemplate(m.submenu);
-      menuItem.onclick = () => menu.popup();
+      menuItem.onclick = () => {
+        const rect = menuItem.getBoundingClientRect();
+        menu.popup(Math.round(rect.left), Math.round(rect.bottom));
+      };
     });
   }
 }

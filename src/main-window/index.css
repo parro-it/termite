@@ -155,3 +155,24 @@ main.window-content {
 
 
 
+nav.other-platform-menu {
+    font-size: 12px;
+    margin: 6px;
+     -webkit-app-region: no-drag;
+}
+
+nav.other-platform-menu > span:hover {
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    background-color: #eee;
+}
+
+nav.other-platform-menu > span {
+    margin-left: 1px;
+    padding: 4px;
+    border: 1px solid transparent;
+     -webkit-app-region: no-drag;
+}
+
+
+
