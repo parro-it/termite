@@ -40,8 +40,20 @@ function setupMenus(menuTemplate, termiteApp) {
   };
 
   instrumentMenu(menuTemplate);
-  const menu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(menu);
+
+  if (process.platform === 'darwin') {
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu);
+  } else {
+    const otherPlatformMenu = document.querySelector('.other-platform-menu');
+    menuTemplate.forEach(m => {
+      const menuItem = document.createElement('span');
+      menuItem.textContent = m.label;
+      otherPlatformMenu.appendChild(menuItem);
+      const menu = Menu.buildFromTemplate(m.submenu);
+      menuItem.onclick = () => menu.popup();
+    });
+  }
 }
 
 module.exports = {
