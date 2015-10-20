@@ -13,6 +13,7 @@ class Tab {
   close() {
     this.component.close();
     this.element.remove();
+    delete this.pkg.tabs[this.id];
   }
 
   activate() {
@@ -61,12 +62,7 @@ module.exports = {
       app.commands.register('close-current', () => {
         const current = this.current();
         current.close();
-        const closeTab = this.tabsShell.querySelector('.tab-item.active .icon-close-tab');
-
-        if (closeTab) {
-          const click = new Event('click');
-          closeTab.dispatchEvent(click);
-        }
+        this.activateFirstTab();
       });
     });
   },
@@ -103,9 +99,11 @@ module.exports = {
 
     const closeTab = tab.element.querySelector('.icon-close-tab');
     closeTab.addEventListener('click', () => {
-      this.activateFirstTab();
       tab.close();
+      this.activateFirstTab();
     });
+
+    return tab;
   },
 
   activateFirstTab() {
