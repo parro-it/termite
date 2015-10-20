@@ -63,14 +63,16 @@ module.exports = Object.assign(new EventEmitter(), {
       const pluginResult = plugin(this);
       this.packages[pluginResult.name] = pluginResult;
     });
-    loader.on('error', err => {
-      alert('An error occurred while loading plugins:\n' + err.stack);
-    });
-    loader.on('allPluginsLoaded', () => {
+
+    loader.on('allPluginsLoaded', errors => {
+      if (errors) {
+        alert('Some error occurred while loading plugins:\n' + errors);
+      }
+
       this.emit('packages-init-done');
     });
 
-    loader.discover();
+    loader.discover(true);
   },
 
   start() {
