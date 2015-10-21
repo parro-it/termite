@@ -59,14 +59,6 @@ textarea {
   right:20px;
 }
 
-input.stdin {
-    font-size: 3px;
-    background-color: transparent;
-    position: absolute;
-    border: none;
-    box-shadow: none;
-    outline: none;
-}
 
 main.window-content {
     height: -webkit-calc(100% - 100px);
