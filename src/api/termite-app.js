@@ -73,6 +73,11 @@ module.exports = Object.assign(new EventEmitter(), {
     });
 
     loader.discover(true);
+    setTimeout(()=>{
+      this.window = BrowserWindow.getFocusedWindow();
+      this.window.maximize();
+      this.emit('window-ready');
+    }, 100);
   },
 
   start() {
@@ -87,8 +92,6 @@ module.exports = Object.assign(new EventEmitter(), {
       frame: false
     });
 
-    this.window.showUrl(__dirname + '/../main-window/index.html', () => {
-      this.window.maximize();
-    });
+    this.window.showUrl(__dirname + '/../main-window/index.html', ()=>{});
   }
 });

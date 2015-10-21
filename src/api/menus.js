@@ -7,7 +7,7 @@ function setupMenus(menuTemplate, termiteApp) {
   const globalShortcut = remote.require('global-shortcut');
   const Menu = remote.require('menu');
   const app = remote.require('app');
-  const BrowserWindow = remote.require('browser-window');
+  // const BrowserWindow = remote.require('browser-window');
 
   globalShortcut.unregisterAll();
 
@@ -21,14 +21,13 @@ function setupMenus(menuTemplate, termiteApp) {
 
         if (m.accelerator) {
           const shortcut = m.accelerator;
-          // delete m.accelerator;
-          app.on('browser-window-focus', () => {
+          app.once('browser-window-focus', () => {
             globalShortcut.register(shortcut, handler);
           });
 
           globalShortcut.register(shortcut, handler);
 
-          app.on('browser-window-blur', () => {
+          app.once('browser-window-blur', () => {
             globalShortcut.unregister(shortcut, handler);
           });
         }

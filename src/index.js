@@ -5,6 +5,10 @@ if (process.env.DEBUG) {
   electronDebug();
 }
 
+process.on('uncaughtException', function(err) {
+  process.stdout.write('Uncaught exception: \n\n' + err.stack + '\n\n');
+});
+
 app.on('ready', () => {
   termiteApp.start();
 });
@@ -15,6 +19,3 @@ app.on('window-all-closed', function onWindowAllClosed() {
   }
 });
 
-process.on('uncaughtException', function(err) {
-  process.stdout.write('Uncaught exception: \n\n' + err.stack + '\n\n');
-});
