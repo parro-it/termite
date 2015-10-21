@@ -69,7 +69,7 @@ input.stdin {
 }
 
 main.window-content {
-    height: -webkit-calc(100% - 70px);
+    height: -webkit-calc(100% - 100px);
     -webkit-app-region: no-drag;
 }
 
