@@ -4,6 +4,7 @@ const commands = require('./commands');
 const config = require('./config');
 const EventEmitter = require('events').EventEmitter;
 const PluginLoader = require('plugin-loader').PluginLoader;
+const resolve = require('path').resolve;
 
 module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
@@ -84,7 +85,7 @@ module.exports = Object.assign(new EventEmitter(), {
   start() {
     const window = require('electron-window');
 
-    const appIcon = __dirname + '/../../resources/icon.png';
+    const appIcon = resolve(__dirname, '../../media/icon.png');
 
     this.window = window.createWindow({
       resizable: true,
