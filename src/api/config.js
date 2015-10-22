@@ -6,21 +6,8 @@ const EventEmitter = require('events').EventEmitter;
 const JSON5 = require('json5');
 
 const config = Object.assign(new EventEmitter(), {
-  initPackageDefaultsPreferences(pkg) {
-    const configFile = join(this.configFolder, pkg.name + '.json5');
+  readPackageDefaultsPreferences(pkg) {
     const defaultsConfigFile = join(`${pkg.path}/default-preferences.json5`);
-    pkg.configFile = configFile;
-
-
-    if (!fs.existsSync(this.configFolder)) {
-      fs.mkdirSync(this.configFolder);
-    }
-
-    if (!fs.existsSync(configFile) && fs.existsSync(defaultsConfigFile)) {
-      const defaultsConfigContent = fs.readFileSync(defaultsConfigFile);
-      fs.writeFileSync(configFile, defaultsConfigContent);
-    }
-
     return this.loadPreferences(defaultsConfigFile);
   },
 
@@ -32,25 +19,28 @@ const config = Object.assign(new EventEmitter(), {
   },
 
   init(app) {
-    this.defaultPreferences = {};
     this.configFolder = join(homedir(), '.termite');
+    this.configFile = join(this.configFolder, 'preferences.json5');
+
+    if (!fs.existsSync(this.configFolder)) {
+      fs.mkdirSync(this.configFolder);
+    }
+
+    this.defaultPreferences = {};
+    this.userPreferences = this.loadPreferences(this.configFile);
+
     app.on('packages-init-done', () => {
       try {
         Object.keys(app.packages).forEach(packageName => {
           const pkg = app.packages[packageName];
-          process.stdout.write(packageName + ' initPackageDefaultsPreferences...');
-          pkg.defaultPreferences = this.initPackageDefaultsPreferences(pkg);
-          this.defaultPreferences[packageName] = pkg.defaultPreferences;
 
-          process.stdout.write('done.\n');
-          process.stdout.write(packageName + ' loadPreferences...');
+          this.defaultPreferences[packageName] = this.readPackageDefaultsPreferences(pkg);
 
           pkg.preferences = Object.assign(
-            this.loadPreferences(pkg.configFile),
+            this.userPreferences[pkg.name] || {},
             { __proto__: pkg.defaultPreferences }
           );
 
-          process.stdout.write('done.\n');
           setImmediate(() => {
             (p => {
               this.emit('preferences-loaded', p);
