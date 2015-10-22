@@ -9,6 +9,21 @@
 		},
 		{
 			"path": "/Users/parroit/Desktop/repos/command-palette"
+		},
+		{
+			"path": "/home/parro-it/Desktop/repos/termite-plugin-command-manager"
+		},
+		{
+			"path": "/home/parro-it/Desktop/repos/termite-plugin-core"
+		},
+		{
+			"path": "/home/parro-it/Desktop/repos/termite-plugin-example"
+		},
+		{
+			"path": "/home/parro-it/Desktop/repos/termite-plugin-preference"
+		},
+		{
+			"path": "/home/parro-it/Desktop/repos/termite-plugin-shell"
 		}
 	]
 }

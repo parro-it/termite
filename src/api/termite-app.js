@@ -43,6 +43,7 @@ module.exports = Object.assign(new EventEmitter(), {
       document.body.appendChild(script);
     });
 
+
     document.querySelector('.titlebar-close').addEventListener('click', () =>{
       window.close();
     });

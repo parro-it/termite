@@ -28,14 +28,8 @@
   "eslintConfig": {
     "extends": "devenv"
   },
-  "babel": {
-    "stage": 4
-  },
   "devDependencies": {
     "tape-async": ">1.0.0"
-  },
-  "install-this-global-to-develop": {
-    "esenv": "^1.1.0"
   },
   "node_deb": {
     "start_script": "app/termite"
