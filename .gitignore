@@ -49,20 +49,11 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
-rethinkdb_data
-private
-
 dist
-dist_test
-
-
 
 .DS_STORE
 
 
 **/.DS_Store
 
-
-
 *.deb
-app
