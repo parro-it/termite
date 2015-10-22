@@ -3,7 +3,6 @@ body {
   font-size: 24px;
   margin: 0;
   background: #002b36;
-  /* white-space: pre; */
 }
 
 html, body {
@@ -33,17 +32,7 @@ html {
 .preference pre {
   font-family: monospace;
   font-size: 14;
-
-
 }
-
-
-.cursor-node[focus="false"] {
-    box-sizing: border-box;
-    background-color: transparent !important;
-    border-left: 1px solid rgba(131, 148, 150, 0.7) !important;
-}
-
 
 textarea {
   position: absolute;
@@ -58,7 +47,6 @@ textarea {
   top:50px;
   right:20px;
 }
-
 
 main.window-content {
     height: -webkit-calc(100% - 100px);
