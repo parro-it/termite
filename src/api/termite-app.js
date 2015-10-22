@@ -93,6 +93,6 @@ module.exports = Object.assign(new EventEmitter(), {
       frame: false
     });
 
-    this.window.showUrl(__dirname + '/../main-window/index.html', ()=>{});
+    this.window.showUrl(__dirname + '/../assets/index.html', ()=>{});
   }
 });
