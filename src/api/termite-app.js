@@ -3,9 +3,9 @@ const tabs = require('./tabs');
 const palette = require('./palette');
 const commands = require('./commands');
 const config = require('./config');
+const plugins = require('./plugins');
 
 const EventEmitter = require('events').EventEmitter;
-const PluginLoader = require('plugin-loader').PluginLoader;
 const resolve = require('path').resolve;
 
 module.exports = Object.assign(new EventEmitter(), {
@@ -17,6 +17,7 @@ module.exports = Object.assign(new EventEmitter(), {
   commands: commands,
   config: config,
   menus: menus,
+  plugins: plugins,
 
   quit() {
     this.commands.execute('quit');
@@ -28,6 +29,7 @@ module.exports = Object.assign(new EventEmitter(), {
     this.commands.init(this);
     this.config.init(this);
     this.menus.init(this);
+    this.plugins.init(this);
     this.emit('api-init-done');
 
 
@@ -64,21 +66,12 @@ module.exports = Object.assign(new EventEmitter(), {
 
     setImmediate(() => this.emit('dom-available'));
     global.termite = this;
-    const loader = new PluginLoader([this.config.configFolder + '/plugins/node_modules']);
-    loader.on('pluginLoaded', (pluginName, plugin) => {
-      const pluginResult = plugin(this);
-      this.packages[pluginResult.name] = pluginResult;
-    });
 
-    loader.on('allPluginsLoaded', errors => {
-      if (errors) {
-        process.stderr.write('Some error occurred while loading plugins:\n' + require('util').inspect(errors));
-      }
+    this.plugins.load()
+      .then(() =>
+        this.emit('packages-init-done')
+      );
 
-      this.emit('packages-init-done');
-    });
-
-    loader.discover(true);
     setTimeout(()=>{
       this.window = BrowserWindow.getFocusedWindow();
       this.window.maximize();
