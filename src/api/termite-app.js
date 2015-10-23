@@ -1,7 +1,9 @@
 const menus = require('./menus');
 const tabs = require('./tabs');
+const palette = require('./palette');
 const commands = require('./commands');
 const config = require('./config');
+
 const EventEmitter = require('events').EventEmitter;
 const PluginLoader = require('plugin-loader').PluginLoader;
 const resolve = require('path').resolve;
@@ -10,6 +12,7 @@ module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
 
+  palette: palette,
   tabs: tabs,
   commands: commands,
   config: config,
@@ -20,6 +23,7 @@ module.exports = Object.assign(new EventEmitter(), {
   },
 
   initRenderer() {
+    this.palette.init(this);
     this.tabs.init(this);
     this.commands.init(this);
     this.config.init(this);
@@ -68,7 +72,7 @@ module.exports = Object.assign(new EventEmitter(), {
 
     loader.on('allPluginsLoaded', errors => {
       if (errors) {
-        alert('Some error occurred while loading plugins:\n' + errors);
+        process.stderr.write('Some error occurred while loading plugins:\n' + require('util').inspect(errors));
       }
 
       this.emit('packages-init-done');
