@@ -6,12 +6,15 @@
   "author": "andrea@parro.it",
   "license": "mit",
   "dependencies": {
+    "co": "^4.6.0",
     "command-palette": "^1.1.1",
     "electron-debug": "^0.2.1",
     "electron-window": "^0.6.0",
+    "enpeem": "^2.1.0",
     "is-electron-renderer": "^2.0.0",
     "json5": "^0.4.0",
     "node-uuid": "^1.4.3",
+    "npm-keyword": "^4.1.0",
     "plugin-loader": "0.0.2"
   },
   "scripts": {
