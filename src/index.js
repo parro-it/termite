@@ -1,22 +1,11 @@
+'use strict';
 
+const electronDetach = require('electron-detach');
+electronDetach({
+  requireCmdlineArg: false
+});
 
 const app = require('app');
-const argv = require('yargs').argv;
-const child_process = require('child_process');
- 
-if (argv.detach) {
-	var child = child_process.spawn(
-		'electron', 
-		process.argv.slice(1).filter(a => a !== '--detach'), 
-		{
-			detached: true
-		}
-	);
-	child.unref();
-	app.quit();
-
-}
-
 const electronDebug = require('electron-debug');
 const termiteApp = require('./api/termite-app');
 
