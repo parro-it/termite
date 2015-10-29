@@ -6,6 +6,7 @@
   "author": "andrea@parro.it",
   "license": "mit",
   "dependencies": {
+    "atom-keymap": "^6.1.0",
     "co": "^4.6.0",
     "command-palette": "^1.1.1",
     "electron-debug": "^0.2.1",
