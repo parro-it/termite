@@ -4,7 +4,12 @@ const JSON5 = require('json5');
 
 function setupMenus(menuTemplate, termiteApp) {
   const remote = require('remote');
+  const globalShortcut = remote.require('global-shortcut');
   const Menu = remote.require('menu');
+  const app = remote.require('app');
+  // const BrowserWindow = remote.require('browser-window');
+
+  globalShortcut.unregisterAll();
 
   const instrumentMenu = (menus) => {
     menus.forEach(m => {
@@ -13,6 +18,19 @@ function setupMenus(menuTemplate, termiteApp) {
           termiteApp.commands.execute(m.command);
         };
         m.click = handler;
+
+        if (m.accelerator) {
+          const shortcut = m.accelerator;
+          app.once('browser-window-focus', () => {
+            globalShortcut.register(shortcut, handler);
+          });
+
+          globalShortcut.register(shortcut, handler);
+
+          app.once('browser-window-blur', () => {
+            globalShortcut.unregister(shortcut, handler);
+          });
+        }
       }
 
       if (m.submenu) {

@@ -4,7 +4,6 @@ const palette = require('./palette');
 const commands = require('./commands');
 const config = require('./config');
 const plugins = require('./plugins');
-const keymap = require('./keymap');
 
 const EventEmitter = require('events').EventEmitter;
 const resolve = require('path').resolve;
@@ -19,7 +18,6 @@ module.exports = Object.assign(new EventEmitter(), {
   config: config,
   menus: menus,
   plugins: plugins,
-  keymap: keymap,
 
   quit() {
     this.commands.execute('quit');
@@ -32,7 +30,6 @@ module.exports = Object.assign(new EventEmitter(), {
     this.config.init(this);
     this.menus.init(this);
     this.plugins.init(this);
-    this.keymap.init(this);
     this.emit('api-init-done');
 
 
