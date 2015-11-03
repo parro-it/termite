@@ -4,12 +4,11 @@ const JSON5 = require('json5');
 
 function setupMenus(menuTemplate, termiteApp) {
   const remote = require('remote');
-  const globalShortcut = remote.require('global-shortcut');
+  const localShortcut = remote.require('electron-localshortcut');
   const Menu = remote.require('menu');
-  const app = remote.require('app');
-  // const BrowserWindow = remote.require('browser-window');
+  const win = remote.getCurrentWindow();
 
-  globalShortcut.unregisterAll();
+  localShortcut.unregisterAll(win);
 
   const instrumentMenu = (menus) => {
     menus.forEach(m => {
@@ -20,16 +19,7 @@ function setupMenus(menuTemplate, termiteApp) {
         m.click = handler;
 
         if (m.accelerator) {
-          const shortcut = m.accelerator;
-          app.once('browser-window-focus', () => {
-            globalShortcut.register(shortcut, handler);
-          });
-
-          globalShortcut.register(shortcut, handler);
-
-          app.once('browser-window-blur', () => {
-            globalShortcut.unregister(shortcut, handler);
-          });
+          localShortcut.register(win, m.accelerator, handler);
         }
       }
 
