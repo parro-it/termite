@@ -8,6 +8,23 @@ const plugins = require('./plugins');
 const EventEmitter = require('events').EventEmitter;
 const resolve = require('path').resolve;
 
+function registerWindowButtonHandlers() {
+  const BrowserWindow = require('remote').require('browser-window');
+
+  document.querySelector('.titlebar-close').addEventListener('click', () =>{
+    window.close();
+  });
+
+  document.querySelector('.titlebar-minimize').addEventListener('click', () =>{
+    BrowserWindow.getFocusedWindow().minimize();
+  });
+
+  document.querySelector('.titlebar-fullscreen').addEventListener('click', () =>{
+    const win = BrowserWindow.getFocusedWindow();
+    win.setFullScreen(!win.isFullScreen());
+  });
+}
+
 module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
@@ -24,19 +41,17 @@ module.exports = Object.assign(new EventEmitter(), {
   },
 
   initRenderer() {
+    this.commands.init(this);
     this.palette.init(this);
     this.tabs.init(this);
-    this.commands.init(this);
     this.config.init(this);
     this.menus.init(this);
     this.plugins.init(this);
-    this.emit('api-init-done');
 
 
     this.packages = {};
     this.packagesFolder = __dirname + '/../packages';
 
-    const BrowserWindow = require('remote').require('browser-window');
 
     this.commands.register('inject-js', code => {
       const script = document.createElement('script');
@@ -51,18 +66,7 @@ module.exports = Object.assign(new EventEmitter(), {
     });
 
 
-    document.querySelector('.titlebar-close').addEventListener('click', () =>{
-      window.close();
-    });
-
-    document.querySelector('.titlebar-minimize').addEventListener('click', () =>{
-      BrowserWindow.getFocusedWindow().minimize();
-    });
-
-    document.querySelector('.titlebar-fullscreen').addEventListener('click', () =>{
-      const win = BrowserWindow.getFocusedWindow();
-      win.setFullScreen(!win.isFullScreen());
-    });
+    registerWindowButtonHandlers();
 
     setImmediate(() => this.emit('dom-available'));
     global.termite = this;
@@ -73,6 +77,8 @@ module.exports = Object.assign(new EventEmitter(), {
       );
 
     setTimeout(()=>{
+      const BrowserWindow = require('remote').require('browser-window');
+
       this.window = BrowserWindow.getFocusedWindow();
       this.window.maximize();
       this.emit('window-ready');

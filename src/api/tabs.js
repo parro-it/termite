@@ -58,12 +58,10 @@ module.exports = {
   init(app) {
     this.tabsShell = document.querySelector('.tab-group');
 
-    app.on('api-init-done', () => {
-      app.commands.register('close-current', () => {
-        const current = this.current();
-        current.close();
-        this.activateFirstTab();
-      });
+    app.commands.register('close-current', () => {
+      const current = this.current();
+      current.close();
+      this.activateFirstTab();
     });
   },
 

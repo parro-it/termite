@@ -21,6 +21,7 @@
     "yargs": "^3.29.0"
   },
   "scripts": {
+    "start": "DEBUG=1 electron .",
     "test": "test-node",
     "debug": "debug",
     "cover": "cover-node",
