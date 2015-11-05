@@ -68,7 +68,6 @@ module.exports = Object.assign(new EventEmitter(), {
 
     registerWindowButtonHandlers();
 
-    setImmediate(() => this.emit('dom-available'));
     global.termite = this;
 
     this.plugins.load()
