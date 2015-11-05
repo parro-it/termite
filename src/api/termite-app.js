@@ -75,13 +75,6 @@ module.exports = Object.assign(new EventEmitter(), {
         this.emit('packages-init-done')
       );
 
-    setTimeout(()=>{
-      const BrowserWindow = require('remote').require('browser-window');
-
-      this.window = BrowserWindow.getFocusedWindow();
-      this.window.maximize();
-      this.emit('window-ready');
-    }, 100);
   },
 
   start() {
