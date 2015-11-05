@@ -25,6 +25,20 @@ function registerWindowButtonHandlers() {
   });
 }
 
+function registerJsCommands() {
+  commands.register('inject-js', code => {
+    const script = document.createElement('script');
+    script.textContent = code;
+    document.body.appendChild(script);
+  });
+
+  commands.register('inject-script', path => {
+    const script = document.createElement('script');
+    script.src = path;
+    document.body.appendChild(script);
+  });
+}
+
 module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
@@ -52,20 +66,7 @@ module.exports = Object.assign(new EventEmitter(), {
     this.packages = {};
     this.packagesFolder = __dirname + '/../packages';
 
-
-    this.commands.register('inject-js', code => {
-      const script = document.createElement('script');
-      script.textContent = code;
-      document.body.appendChild(script);
-    });
-
-    this.commands.register('inject-script', path => {
-      const script = document.createElement('script');
-      script.src = path;
-      document.body.appendChild(script);
-    });
-
-
+    registerJsCommands();
     registerWindowButtonHandlers();
 
     global.termite = this;
@@ -74,7 +75,6 @@ module.exports = Object.assign(new EventEmitter(), {
       .then(() =>
         this.emit('packages-init-done')
       );
-
   },
 
   start() {
