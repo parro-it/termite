@@ -36,20 +36,29 @@ function setupMenus(menuTemplate, termiteApp) {
     Menu.setApplicationMenu(menu);
   } else {
     const otherPlatformMenu = document.querySelector('.other-platform-menu');
-
-    menuTemplate.forEach(m => {
+    const systemMenus = menuTemplate.map(m => {
       const menuItem = document.createElement('span');
       menuItem.textContent = m.label;
-      otherPlatformMenu.appendChild(menuItem);
+      menuItem.submenu = m.submenu;
 
-      menuItem.onclick = () => {
-        const rect = menuItem.getBoundingClientRect();
-        ipc.send('window-menu-clicked', m.submenu, {
-          left: Math.round(rect.left),
-          bottom: Math.round(rect.bottom)
-        });
-      };
+      otherPlatformMenu.appendChild(menuItem);
+      return menuItem;
     });
+
+    const popupMenu = menuItem => () => {
+      const rect = menuItem.getBoundingClientRect();
+      /* systemMenus
+        .filter(m => m !== menuItem)
+        .forEach(otherMenuItem =>
+          otherMenuItem.onmouseover = popupMenu(otherMenuItem)
+        ); */
+      ipc.send('window-menu-clicked', menuItem.submenu, {
+        left: Math.round(rect.left),
+        bottom: Math.round(rect.bottom)
+      });
+    };
+
+    systemMenus.forEach(menuItem => menuItem.onclick = popupMenu(menuItem));
   }
 }
 
