@@ -52,10 +52,8 @@ function setupMenus(menuTemplate, termiteApp) {
         .forEach(otherMenuItem =>
           otherMenuItem.onmouseover = popupMenu(otherMenuItem)
         ); */
-      ipc.send('window-menu-clicked', menuItem.submenu, {
-        left: Math.round(rect.left),
-        bottom: Math.round(rect.bottom)
-      });
+      const menu = Menu.buildFromTemplate(menuItem.submenu);
+      menu.popup(Math.round(rect.left), Math.round(rect.bottom));
     };
 
     systemMenus.forEach(menuItem => menuItem.onclick = popupMenu(menuItem));
@@ -65,7 +63,11 @@ function setupMenus(menuTemplate, termiteApp) {
 module.exports = {
   menuTemplate: [],
   init(app) {
-    const appMenu = {};
+    const appMenu = {
+      File: [],
+      Edit: [],
+      Tools: []
+    };
     const merge = (menuTemplate, menu) => {
       Object.keys(menu).forEach(property => {
         if (property in menuTemplate) {

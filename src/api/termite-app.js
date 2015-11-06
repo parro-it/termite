@@ -8,15 +8,6 @@ const ipc = require('ipc');
 const EventEmitter = require('events').EventEmitter;
 const resolve = require('path').resolve;
 
-function handleSystemMenus() {
-  const Menu = require('menu');
-
-  ipc.on('window-menu-clicked', (e, submenus, rect)=> {
-    const menu = Menu.buildFromTemplate(submenus);
-    menu.popup(rect.left, rect.bottom);
-  });
-}
-
 function registerWindowButtonHandlers() {
   const BrowserWindow = require('remote').require('browser-window');
 
@@ -100,6 +91,5 @@ module.exports = Object.assign(new EventEmitter(), {
 
     this.window.showUrl(__dirname + '/../assets/index.html', ()=>{});
 
-    handleSystemMenus();
   }
 });
