@@ -8,12 +8,19 @@ const co = require('co');
 const mkdirp = require('mkdirp');
 const emptyDir = require('empty-dir');
 
+const defaultPlugins = [
+  'termite-plugin-command-manager',
+  'termite-plugin-core',
+  'termite-plugin-preference',
+  'termite-plugin-shell'
+];
+
 module.exports = Object.assign(new EventEmitter(), {
   load() {
     const pluginModules = this.pluginsFolder + '/node_modules';
     mkdirp.sync(pluginModules);
     if (emptyDir.sync(pluginModules)) {
-      return Promise.resolve();
+      return this.installDefaultPlugins();
     }
 
     const loader = new PluginLoader([pluginModules]);
@@ -35,25 +42,42 @@ module.exports = Object.assign(new EventEmitter(), {
     });
   },
 
+  installDefaultPlugins() {
+    const pluginsInstalling = defaultPlugins.map(p => this.installPlugin(p));
+    return Promise.all(pluginsInstalling)
+      .then(() => this.load());
+  },
+
+  installPlugin(pluginToInstall) {
+    const opts = {
+      dir: this.app.config.configFolder + '/plugins',
+      dependencies: [pluginToInstall],
+      loglevel: 'verbose'
+    };
+
+    return new Promise((resolve, reject) => {
+      npm.install(opts, err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  },
+
   init(app) {
     this.app = app;
     this.pluginsFolder = app.config.configFolder + '/plugins';
-
+    const _this = this;
     app.commands.register('install-package', co.wrap(function * () {
       const plugins = yield npmKeyword.names('termite-plugin');
       const pluginToInstall = yield app.palette.open(plugins);
-      const opts = {
-        dir: app.config.configFolder + '/plugins',
-        dependencies: [pluginToInstall],
-        loglevel: 'verbose'
-      };
-
-      npm.install(opts, err => {
-        if (err) {
-          return process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
-        }
+      try {
+        yield _this.installPlugin(pluginToInstall);
         alert(pluginToInstall + ' installed.');
-      });
+      } catch (err) {
+        process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
+      }
     }));
   }
 });

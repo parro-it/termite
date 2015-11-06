@@ -1,7 +1,6 @@
 const fs = require('fs');
 const join = require('path').join;
 const JSON5 = require('json5');
-const ipc = require('ipc');
 
 function setupMenus(menuTemplate, termiteApp) {
   const remote = require('remote');
