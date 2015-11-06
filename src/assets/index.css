@@ -45,6 +45,7 @@ html {
 main.window-content {
     height: -webkit-calc(100% - 100px);
     -webkit-app-region: no-drag;
+    overflow-y: hidden;
 }
 
 .titlebar {
