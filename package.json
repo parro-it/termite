@@ -32,7 +32,8 @@
     "release-patch": "release-patch",
     "lint": "lint",
     "prepublish": "lint",
-    "pkg": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=x64",
+    "pkg-64": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=x64",
+    "pkg-32": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=ia32",
     "deb": "cd dist/termite-linux-x64 && node-deb . && mv *.deb dist"
   },
   "eslintConfig": {
