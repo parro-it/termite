@@ -31,6 +31,7 @@ class Tab {
   }
 
   createElement() {
+    const addTabElm = document.querySelector('.add-tab');
     const elm = document.createElement('div');
     elm.id = '__' + this.id.replace(/-/g, '_');
     elm.classList.add('tab-item');
@@ -47,7 +48,7 @@ class Tab {
     elm.appendChild(title);
     this.title = title;
 
-    this.tabsShell.appendChild(elm);
+    this.tabsShell.insertBefore(elm, addTabElm);
     this.element = elm;
   }
 }
