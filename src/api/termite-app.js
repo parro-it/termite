@@ -74,7 +74,10 @@ module.exports = Object.assign(new EventEmitter(), {
     this.plugins.load()
       .then(() =>
         this.emit('packages-init-done')
-      );
+      )
+      .catch(err => {
+        process.stdout.write(`Error loading plugins:\n${err.stack}\n`);
+      });
   },
 
   start() {
