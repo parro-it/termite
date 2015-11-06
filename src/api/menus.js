@@ -1,13 +1,13 @@
 const fs = require('fs');
 const join = require('path').join;
 const JSON5 = require('json5');
+const ipc = require('ipc');
 
 function setupMenus(menuTemplate, termiteApp) {
   const remote = require('remote');
   const localShortcut = remote.require('electron-localshortcut');
   const Menu = remote.require('menu');
   const win = remote.getCurrentWindow();
-
   localShortcut.unregisterAll(win);
 
   const instrumentMenu = (menus) => {
@@ -36,14 +36,18 @@ function setupMenus(menuTemplate, termiteApp) {
     Menu.setApplicationMenu(menu);
   } else {
     const otherPlatformMenu = document.querySelector('.other-platform-menu');
+
     menuTemplate.forEach(m => {
       const menuItem = document.createElement('span');
       menuItem.textContent = m.label;
       otherPlatformMenu.appendChild(menuItem);
-      const menu = Menu.buildFromTemplate(m.submenu);
+
       menuItem.onclick = () => {
         const rect = menuItem.getBoundingClientRect();
-        menu.popup(Math.round(rect.left), Math.round(rect.bottom));
+        ipc.send('window-menu-clicked', m.submenu, {
+          left: Math.round(rect.left),
+          bottom: Math.round(rect.bottom)
+        });
       };
     });
   }
