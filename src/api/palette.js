@@ -3,7 +3,7 @@
 const EventEmitter = require('events').EventEmitter;
 
 
-module.exports = Object.assign(new EventEmitter(), {
+module.exports = () => Object.assign(new EventEmitter(), {
   open(items) {
     const palette = require('command-palette');
     const p = palette.create(items);
@@ -13,7 +13,5 @@ module.exports = Object.assign(new EventEmitter(), {
       p.appendTo(document.body);
       p.show();
     });
-  },
-
-  init() {}
+  }
 });

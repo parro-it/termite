@@ -15,69 +15,69 @@ const defaultPlugins = [
   'termite-plugin-shell'
 ];
 
-module.exports = Object.assign(new EventEmitter(), {
-  load() {
-    const pluginModules = this.pluginsFolder + '/node_modules';
-    mkdirp.sync(pluginModules);
-    if (emptyDir.sync(pluginModules)) {
-      return this.installDefaultPlugins();
-    }
-
-    const loader = new PluginLoader([pluginModules]);
-    loader.on('pluginLoaded', (pluginName, plugin) => {
-      const pluginResult = plugin(this.app);
-      this.app.packages[pluginResult.name] = pluginResult;
-    });
-
-    return new Promise((resolve, reject) => {
-      loader.on('error', reject);
-      loader.on('allPluginsLoaded', errors => {
-        if (errors) {
-          process.stderr.write('Some error occurred while loading plugins:\n' + require('util').inspect(errors));
-        }
-        resolve();
-      });
-
-      loader.discover(true);
-    });
-  },
-
-  installDefaultPlugins() {
-    const pluginsInstalling = defaultPlugins.map(p => this.installPlugin(p));
-    return Promise.all(pluginsInstalling)
-      .then(() => this.load());
-  },
-
-  installPlugin(pluginToInstall) {
-    const opts = {
-      dir: this.app.config.configFolder + '/plugins',
-      dependencies: [pluginToInstall],
-      loglevel: 'verbose'
-    };
-
-    return new Promise((resolve, reject) => {
-      npm.install(opts, err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  },
-
-  init(app) {
-    this.app = app;
-    this.pluginsFolder = app.config.configFolder + '/plugins';
-    const _this = this;
-    app.commands.register('install-package', co.wrap(function * () {
-      const plugins = yield npmKeyword.names('termite-plugin');
-      const pluginToInstall = yield app.palette.open(plugins);
-      try {
-        yield _this.installPlugin(pluginToInstall);
-        alert(pluginToInstall + ' installed.');
-      } catch (err) {
-        process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
+module.exports = app => {
+  const mod = Object.assign(new EventEmitter(), {
+    load() {
+      const pluginModules = this.pluginsFolder + '/node_modules';
+      mkdirp.sync(pluginModules);
+      if (emptyDir.sync(pluginModules)) {
+        return this.installDefaultPlugins();
       }
-    }));
-  }
-});
+
+      const loader = new PluginLoader([pluginModules]);
+      loader.on('pluginLoaded', (pluginName, plugin) => {
+        const pluginResult = plugin(app);
+        app.packages[pluginResult.name] = pluginResult;
+      });
+
+      return new Promise((resolve, reject) => {
+        loader.on('error', reject);
+        loader.on('allPluginsLoaded', errors => {
+          if (errors) {
+            process.stderr.write('Some error occurred while loading plugins:\n' + require('util').inspect(errors));
+          }
+          resolve();
+        });
+
+        loader.discover(true);
+      });
+    },
+
+    installDefaultPlugins() {
+      const pluginsInstalling = defaultPlugins.map(p => this.installPlugin(p));
+      return Promise.all(pluginsInstalling)
+        .then(() => this.load());
+    },
+
+    installPlugin(pluginToInstall) {
+      const opts = {
+        dir: app.config.configFolder + '/plugins',
+        dependencies: [pluginToInstall],
+        loglevel: 'verbose'
+      };
+
+      return new Promise((resolve, reject) => {
+        npm.install(opts, err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+    }
+  });
+
+  mod.pluginsFolder = app.config.configFolder + '/plugins';
+  app.commands.register('install-package', co.wrap(function * () {
+    const plugins = yield npmKeyword.names('termite-plugin');
+    const pluginToInstall = yield app.palette.open(plugins);
+    try {
+      yield mod.installPlugin(pluginToInstall);
+      alert(pluginToInstall + ' installed.');
+    } catch (err) {
+      process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
+    }
+  }));
+
+  return mod;
+};

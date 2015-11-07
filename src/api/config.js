@@ -5,56 +5,56 @@ const EventEmitter = require('events').EventEmitter;
 
 const JSON5 = require('json5');
 
-const config = Object.assign(new EventEmitter(), {
-  readPackageDefaultsPreferences(pkg) {
-    const defaultsConfigFile = join(`${pkg.path}/default-preferences.json5`);
-    return this.loadPreferences(defaultsConfigFile);
-  },
+module.exports = app => {
+  const config = Object.assign(new EventEmitter(), {
+    readPackageDefaultsPreferences(pkg) {
+      const defaultsConfigFile = join(`${pkg.path}/default-preferences.json5`);
+      return this.loadPreferences(defaultsConfigFile);
+    },
 
-  loadPreferences(configFile) {
-    if (fs.existsSync(configFile)) {
-      return JSON5.parse(fs.readFileSync(configFile));
-    }
-    return {};
-  },
-
-  init(app) {
-    this.configFolder = join(homedir(), '.termite');
-    this.configFile = join(this.configFolder, 'preferences.json5');
-
-    if (!fs.existsSync(this.configFolder)) {
-      fs.mkdirSync(this.configFolder);
-    }
-
-    this.defaultPreferences = {};
-    this.userPreferences = this.loadPreferences(this.configFile);
-
-    app.on('packages-init-done', () => {
-      try {
-        Object.keys(app.packages).forEach(packageName => {
-          const pkg = app.packages[packageName];
-
-          this.defaultPreferences[packageName] = this.readPackageDefaultsPreferences(pkg);
-
-          pkg.preferences = Object.assign(
-            this.userPreferences[pkg.name] || {},
-            { __proto__: pkg.defaultPreferences }
-          );
-
-          setImmediate(() => {
-            (p => {
-              this.emit('preferences-loaded', p);
-            })(pkg);
-          });
-        });
-
-        this.emit('all-preferences-loaded');
-      } catch (err) {
-        process.stderr.write(err.stack);
+    loadPreferences(configFile) {
+      if (fs.existsSync(configFile)) {
+        return JSON5.parse(fs.readFileSync(configFile));
       }
-    });
-  }
-});
+      return {};
+    }
+  });
 
-module.exports = config;
+  config.configFolder = join(homedir(), '.termite');
+  config.configFile = join(config.configFolder, 'preferences.json5');
+
+  if (!fs.existsSync(config.configFolder)) {
+    fs.mkdirSync(config.configFolder);
+  }
+
+  config.defaultPreferences = {};
+  config.userPreferences = config.loadPreferences(config.configFile);
+
+  app.on('packages-init-done', () => {
+    try {
+      Object.keys(app.packages).forEach(packageName => {
+        const pkg = app.packages[packageName];
+
+        config.defaultPreferences[packageName] = config.readPackageDefaultsPreferences(pkg);
+
+        pkg.preferences = Object.assign(
+          config.userPreferences[pkg.name] || {},
+          { __proto__: pkg.defaultPreferences }
+        );
+
+        setImmediate(() => {
+          (p => {
+            config.emit('preferences-loaded', p);
+          })(pkg);
+        });
+      });
+
+      config.emit('all-preferences-loaded');
+    } catch (err) {
+      process.stderr.write(err.stack);
+    }
+  });
+
+  return config;
+};
 

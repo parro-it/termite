@@ -1,10 +1,4 @@
-const menus = require('./menus');
-const tabs = require('./tabs');
-const palette = require('./palette');
-const commands = require('./commands');
-const config = require('./config');
-const plugins = require('./plugins');
-const ipc = require('ipc');
+const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
 const resolve = require('path').resolve;
 
@@ -25,7 +19,7 @@ function registerWindowButtonHandlers() {
   });
 }
 
-function registerJsCommands() {
+function registerJsCommands(commands) {
   commands.register('inject-js', code => {
     const script = document.createElement('script');
     script.textContent = code;
@@ -44,30 +38,24 @@ module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
 
-  palette: palette,
-  tabs: tabs,
-  commands: commands,
-  config: config,
-  menus: menus,
-  plugins: plugins,
-
   quit() {
     this.commands.execute('quit');
   },
 
   initRenderer() {
-    this.commands.init(this);
-    this.palette.init(this);
-    this.tabs.init(this);
-    this.config.init(this);
-    this.menus.init(this);
-    this.plugins.init(this);
-
+    requireProps(this, [
+      './commands',
+      './palette',
+      './tabs',
+      './config',
+      './menus',
+      './plugins'
+    ]);
 
     this.packages = {};
     this.packagesFolder = __dirname + '/../packages';
 
-    registerJsCommands();
+    registerJsCommands(this.commands);
     registerWindowButtonHandlers();
 
     global.termite = this;
@@ -94,6 +82,5 @@ module.exports = Object.assign(new EventEmitter(), {
     });
 
     this.window.showUrl(__dirname + '/../assets/index.html', ()=>{});
-
   }
 });

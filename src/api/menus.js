@@ -59,44 +59,44 @@ function setupMenus(menuTemplate, termiteApp) {
   }
 }
 
-module.exports = {
-  menuTemplate: [],
-  init(app) {
-    const appMenu = {
-      File: [],
-      Edit: [],
-      Tools: []
-    };
-    const merge = (menuTemplate, menu) => {
-      Object.keys(menu).forEach(property => {
-        if (property in menuTemplate) {
-          menuTemplate[property] = menuTemplate[property].concat(menu[property]);
-        } else {
-          menuTemplate[property] = menu[property];
-        }
-      });
-    };
-
-    const mergePackageMenus = packageName => {
-      const pkg = app.packages[packageName];
-      const menuFile = join(pkg.path, 'menu.json5');
-      if (fs.existsSync(menuFile)) {
-        const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
-        merge(appMenu, packageMenu);
+module.exports = app => {
+  const mod = { menuTemplate: []};
+  const appMenu = {
+    File: [],
+    Edit: [],
+    Tools: []
+  };
+  const merge = (menuTemplate, menu) => {
+    Object.keys(menu).forEach(property => {
+      if (property in menuTemplate) {
+        menuTemplate[property] = menuTemplate[property].concat(menu[property]);
+      } else {
+        menuTemplate[property] = menu[property];
       }
-    };
-
-    app.on('packages-init-done', () => {
-      Object.keys(app.packages).forEach(mergePackageMenus);
-      Object.keys(appMenu).forEach(label => {
-        this.menuTemplate.push({
-          label,
-          submenu: appMenu[label]
-        });
-      });
-
-      setupMenus(this.menuTemplate, app);
     });
-  }
+  };
+
+  const mergePackageMenus = packageName => {
+    const pkg = app.packages[packageName];
+    const menuFile = join(pkg.path, 'menu.json5');
+    if (fs.existsSync(menuFile)) {
+      const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
+      merge(appMenu, packageMenu);
+    }
+  };
+
+  app.on('packages-init-done', () => {
+    Object.keys(app.packages).forEach(mergePackageMenus);
+    Object.keys(appMenu).forEach(label => {
+      mod.menuTemplate.push({
+        label,
+        submenu: appMenu[label]
+      });
+    });
+
+    setupMenus(mod.menuTemplate, app);
+  });
+
+  return mod;
 };
 

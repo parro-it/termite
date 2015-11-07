@@ -53,73 +53,75 @@ class Tab {
   }
 }
 
-module.exports = {
-  tabs: {},
+module.exports = app => {
+  const mod = {
+    tabs: {},
 
-  init(app) {
-    this.tabsShell = document.querySelector('.tab-group');
+    current() {
+      const currentTabElm = this.tabsShell.querySelector('.tab-item.active');
 
-    app.commands.register('close-current', () => {
-      const current = this.current();
-      current.close();
-      this.activateFirstTab();
-    });
-  },
+      if (currentTabElm === null) {
+        return null;
+      }
 
-  current() {
-    const currentTabElm = this.tabsShell.querySelector('.tab-item.active');
+      const tabId = currentTabElm.id;
 
-    if (currentTabElm === null) {
-      return null;
-    }
+      const currentTab = this.tabs[tabId.slice(2).replace(/_/g, '-')];
+      return currentTab;
+    },
 
-    const tabId = currentTabElm.id;
+    add(component) {
+      const tab = new Tab(component, this);
+      this.tabs[tab.id] = tab;
 
-    const currentTab = this.tabs[tabId.slice(2).replace(/_/g, '-')];
-    return currentTab;
-  },
-
-  add(component) {
-    const tab = new Tab(component, this);
-    this.tabs[tab.id] = tab;
-
-    component.tabId = tab.id;
-    const main = document.querySelector('main.window-content');
-    main.appendChild(component.element);
+      component.tabId = tab.id;
+      const main = document.querySelector('main.window-content');
+      main.appendChild(component.element);
 
 
-    tab.createElement();
-    component.element.id = tab.element.id + '_component';
-    tab.activate();
-
-    tab.element.addEventListener('mouseup', () => {
+      tab.createElement();
+      component.element.id = tab.element.id + '_component';
       tab.activate();
-    });
 
-    const closeTab = tab.element.querySelector('.icon-close-tab');
-    closeTab.addEventListener('click', () => {
+      tab.element.addEventListener('mouseup', () => {
+        tab.activate();
+      });
+
+      const closeTab = tab.element.querySelector('.icon-close-tab');
+      closeTab.addEventListener('click', () => {
+        tab.close();
+        this.activateFirstTab();
+      });
+
+      return tab;
+    },
+
+    activateFirstTab() {
+      if (this.tabs.length === 0) {
+        return;
+      }
+      this.tabs[Object.keys(this.tabs)[0]].activate();
+    },
+
+    close(tabId) {
+      const tab = this.tabs[tabId];
       tab.close();
       this.activateFirstTab();
-    });
+    },
 
-    return tab;
-  },
 
-  activateFirstTab() {
-    if (this.tabs.length === 0) {
-      return;
+    all() {
+      return this.tabs;
     }
-    this.tabs[Object.keys(this.tabs)[0]].activate();
-  },
+  };
 
-  close(tabId) {
-    const tab = this.tabs[tabId];
-    tab.close();
-    this.activateFirstTab();
-  },
+  mod.tabsShell = document.querySelector('.tab-group');
 
+  app.commands.register('close-current', () => {
+    const current = mod.current();
+    current.close();
+    mod.activateFirstTab();
+  });
 
-  all() {
-    return this.tabs;
-  }
+  return mod;
 };
