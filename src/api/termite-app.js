@@ -39,6 +39,7 @@ function registerJsCommands() {
   });
 }
 
+
 module.exports = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
