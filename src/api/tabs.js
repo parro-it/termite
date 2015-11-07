@@ -123,7 +123,12 @@ module.exports = app => {
     mod.activateFirstTab();
   });
 
-  document.querySelector('.add-tab').addEventListener();
+  const addTab = document.querySelector('.add-tab');
+  addTab.addEventListener('click', () => {
+    // this command is not defined in main package.
+    // It has to be defined in one of the loaded plugins
+    app.commands.execute('new-tab');
+  });
 
   return mod;
 };
