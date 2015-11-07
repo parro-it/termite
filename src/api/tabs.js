@@ -123,5 +123,7 @@ module.exports = app => {
     mod.activateFirstTab();
   });
 
+  document.querySelector('.add-tab').addEventListener();
+
   return mod;
 };

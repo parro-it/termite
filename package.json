@@ -8,6 +8,7 @@
   "dependencies": {
     "co": "^4.6.0",
     "command-palette": "^1.1.1",
+    "debug-menu": "^0.1.1",
     "electron-debug": "^0.3.0",
     "electron-detach": "^0.1.0",
     "electron-localshortcut": "^0.2.2",
