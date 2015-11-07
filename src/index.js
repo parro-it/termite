@@ -5,9 +5,10 @@ electronDetach({
   requireCmdlineArg: false
 });
 
+const resolve = require('path').resolve;
 const app = require('app');
 const electronDebug = require('electron-debug');
-const termiteApp = require('./api/termite-app');
+const createWindow = require('electron-window').createWindow;
 
 if (process.env.DEBUG) {
   electronDebug();
@@ -18,7 +19,16 @@ process.on('uncaughtException', function(err) {
 });
 
 app.on('ready', () => {
-  termiteApp.start();
+  const appIcon = resolve(__dirname, '/../media/icon.png');
+
+  const win = createWindow({
+    resizable: true,
+    icon: appIcon,
+    'accept-first-mouse': true,
+    frame: false
+  });
+
+  win.showUrl(__dirname + '/assets/index.html', ()=>{});
 });
 
 app.on('window-all-closed', function onWindowAllClosed() {

@@ -1,6 +1,5 @@
 const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
-const resolve = require('path').resolve;
 
 function registerWindowButtonHandlers() {
   const BrowserWindow = require('remote').require('browser-window');
@@ -34,53 +33,38 @@ function registerJsCommands(commands) {
 }
 
 
-module.exports = Object.assign(new EventEmitter(), {
+const app = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
+  packages: {},
+  packagesFolder: __dirname + '/../packages', //this could be removed
 
   quit() {
     this.commands.execute('quit');
-  },
-
-  initRenderer() {
-    requireProps(this, [
-      './commands',
-      './palette',
-      './tabs',
-      './config',
-      './menus',
-      './plugins'
-    ]);
-
-    this.packages = {};
-    this.packagesFolder = __dirname + '/../packages';
-
-    registerJsCommands(this.commands);
-    registerWindowButtonHandlers();
-
-    global.termite = this;
-
-    this.plugins.load()
-      .then(() =>
-        this.emit('packages-init-done')
-      )
-      .catch(err => {
-        process.stderr.write(`Error loading plugins:\n${err.stack}\n`);
-      });
-  },
-
-  start() {
-    const window = require('electron-window');
-
-    const appIcon = resolve(__dirname, '../../media/icon.png');
-
-    this.window = window.createWindow({
-      resizable: true,
-      icon: appIcon,
-      'accept-first-mouse': true,
-      frame: false
-    });
-
-    this.window.showUrl(__dirname + '/../assets/index.html', ()=>{});
   }
 });
+
+requireProps(app, [
+  './commands',
+  './palette',
+  './tabs',
+  './config',
+  './menus',
+  './plugins'
+]);
+
+
+registerJsCommands(app.commands);
+registerWindowButtonHandlers();
+
+global.termite = app;
+
+app.plugins.load()
+  .then(() =>
+    app.emit('packages-init-done')
+  )
+  .catch(err => {
+    process.stderr.write(`Error loading plugins:\n${err.stack}\n`);
+  });
+
+module.exports = app;
