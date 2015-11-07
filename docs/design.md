@@ -1,11 +1,11 @@
 # Bootstrap process
 
-1) App start in src/index.js in main process
-2) on app ready main window is created and src/assets/html file is loaded.
-3) In renderer, `./api/termite-app` is required
-4) `./api/termite-app`, all other modules in `src/api` are required
+- 1) App start in src/index.js in main process
+- 2) on app ready main window is created and src/assets/html file is loaded.
+- 3) In renderer, `./api/termite-app` is required
+- 4) `./api/termite-app`, all other modules in `src/api` are required
 using requireProps.
-5) All external plugins is loaded calling `plugins` module `load` method
+- 5) All external plugins is loaded calling `plugins` module `load` method
 
 # Api modules structure
 
