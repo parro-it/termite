@@ -14,13 +14,13 @@ Run termite after install and have fun!
 
 ## Features
 
-[X] Multitab interface
-[X] Colored emoji support
-[X] Highly configurable
-[X] iterm themes support
-[X] modular
-[ ] Draggable tabs
-[ ] High test coverage
+- [X] Multitab interface
+- [X] Colored emoji support
+- [X] Highly configurable
+- [X] iterm themes support
+- [X] modular
+- [ ] Draggable tabs
+- [ ] High test coverage
 
 
 ## Credits
