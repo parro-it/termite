@@ -1,27 +1,34 @@
 # termite
 
-Termite is a vt-100 terminal emulator written in javascript and powered by electron.
+Awesome vt-100 terminal emulator.
 
-![termite](media/termite.gif)
+![termite](media/screenshot.png)
 
 ## Installation
 
-* Debian: download .deb packages from [releases files ](https://github.com/parro-it/termite/releases/download/v1.0.1/termite_1.0.1_all.deb)
-* OSX: TODO
-* Windows: TODO
 * Npm: Install with `npm install -g termite`
-
 
 ## Usage
 
 Run termite after install and have fun!
 
+## Features
+
+[X] Multitab interface
+[X] Colored emoji support
+[X] Highly configurable
+[X] iterm themes support
+[X] modular
+[ ] Draggable tabs
+[ ] High test coverage
 
 
 ## Credits
 
 * shell is implemented using chromium hterm
 * sublime text for inspiration
+
+
 
 ## License
 
