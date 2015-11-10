@@ -6,9 +6,17 @@ Application command are functions registered with the application that can be in
 
 They could optionally have a label, an icon and a shortcut associaed with them, that are automatically used in menu or buttons.
 
-Command function handler are grnated to be executed in rendere process.
+Command function handler are granted to be executed in renderer process.
 
 You can access `commands` object in a plugin using `app.commands`.
+
+## Commands list
+
+This module register following commands:
+
+### command-palette
+Show a list of registered commands in a ui palette dialog.
+
 
 ## Members
 
