@@ -36,12 +36,6 @@ module.exports = app => {
       });
     },
 
-    installDefaultPlugins() {
-      const pluginsInstalling = defaultPlugins.map(p => this.installPlugin(p));
-      return Promise.all(pluginsInstalling)
-        .then(() => this.load());
-    },
-
     installPlugin(pluginToInstall) {
       const opts = {
         dir: app.config.configFolder + '/plugins',

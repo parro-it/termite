@@ -23,4 +23,5 @@ Api modules are loaded using [`require-props`](https://github.com/parro-it/requi
 ## Menus
 ## Palette
 ## Plugins
+## Shell
 ## Tabs
