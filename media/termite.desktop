@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Termite
+Comment=Awesome terminal emulator
+Exec=/home/parroit/.nvm/versions/node/v4.2.1/bin/electron /home/parroit/Desktop/repos/termite/src/index.js --detached-process
+Terminal=false
+Type=Application
+#Encoding=UTF-8
+Icon=/home/parroit/Desktop/repos/termite/media/icon.png
+Categories=System;TerminalEmulator;Utility;
+X-Desktop-File-Install-Version=0.21
+Path=/home/parroit/Desktop/repos/termite
+GenericName=Termite
+Comment[en_US]=Awesome javascript terminal emulator
+Name[en_US]=Termite
