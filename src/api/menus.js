@@ -81,17 +81,7 @@ module.exports = app => {
     }
   };
 
-  const mergePackageMenus = packageName => {
-    const pkg = app.packages[packageName];
-    const menuFile = join(pkg.path, 'menu.json5');
-    if (fs.existsSync(menuFile)) {
-      const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
-      mod.merge(packageMenu);
-    }
-  };
-
   app.on('packages-init-done', () => {
-    Object.keys(app.packages).forEach(mergePackageMenus);
     Object.keys(appMenu).forEach(label => {
       mod.menuTemplate.push({
         label,
