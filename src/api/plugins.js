@@ -9,7 +9,6 @@ const mkdirp = require('mkdirp');
 const emptyDir = require('empty-dir');
 
 const defaultPlugins = [
-  'termite-plugin-command-manager',
   'termite-plugin-preference',
   'termite-plugin-shell'
 ];
