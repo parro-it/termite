@@ -60,20 +60,25 @@ function setupMenus(menuTemplate, termiteApp) {
 }
 
 module.exports = app => {
-  const mod = { menuTemplate: []};
   const appMenu = {
     File: [],
     Edit: [],
     Tools: []
   };
-  const merge = (menuTemplate, menu) => {
-    Object.keys(menu).forEach(property => {
-      if (property in menuTemplate) {
-        menuTemplate[property] = menuTemplate[property].concat(menu[property]);
-      } else {
-        menuTemplate[property] = menu[property];
-      }
-    });
+
+  const mod = {
+    menuTemplate: [],
+
+    merge(menu) {
+      Object.keys(menu).forEach(property => {
+        if (property in appMenu) {
+          const updatedMenu = appMenu[property].concat(menu[property]);
+          appMenu[property] = updatedMenu;
+        } else {
+          appMenu[property] = menu[property];
+        }
+      });
+    }
   };
 
   const mergePackageMenus = packageName => {
@@ -81,7 +86,7 @@ module.exports = app => {
     const menuFile = join(pkg.path, 'menu.json5');
     if (fs.existsSync(menuFile)) {
       const packageMenu = JSON5.parse(fs.readFileSync(menuFile));
-      merge(appMenu, packageMenu);
+      mod.merge(packageMenu);
     }
   };
 
