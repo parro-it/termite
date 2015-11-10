@@ -18,7 +18,7 @@ function registerWindowButtonHandlers() {
   });
 }
 
-function registerJsCommands(commands) {
+function registerCommands(commands) {
   commands.register('inject-js', code => {
     const script = document.createElement('script');
     script.textContent = code;
@@ -29,6 +29,10 @@ function registerJsCommands(commands) {
     const script = document.createElement('script');
     script.src = path;
     document.body.appendChild(script);
+  });
+
+  commands.register('quit', () => {
+    window.close();
   });
 }
 
@@ -53,8 +57,19 @@ requireProps(app, [
   './plugins'
 ]);
 
+app.menus.merge({
+  File: [{
+    label: 'Exit',
+    accelerator: 'CmdOrCtrl+Q',
+    command: 'quit'
+  }, {
+    label: 'Close current shell',
+    accelerator: 'CmdOrCtrl+D',
+    command: 'close-current'
+  }]
+});
 
-registerJsCommands(app.commands);
+registerCommands(app.commands);
 registerWindowButtonHandlers();
 
 global.termite = app;
