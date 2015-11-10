@@ -3,6 +3,8 @@ const join = require('path').join;
 const fs = require('fs');
 const EventEmitter = require('events').EventEmitter;
 
+const PreferenceComponent = require('../components/preference-component');
+
 const JSON5 = require('json5');
 
 module.exports = app => {
@@ -53,6 +55,33 @@ module.exports = app => {
     } catch (err) {
       process.stderr.write(err.stack);
     }
+  });
+
+  app.commands.register('default-preferences', () => {
+    const tab = app.tabs.add(new PreferenceComponent(
+      app.config.defaultPreferences
+    ));
+    tab.setTitle('Default preferences');
+  });
+
+  app.commands.register('user-preferences', () => {
+    const tab = app.tabs.add(new PreferenceComponent(
+      app.config.userPreferences,
+      app.config.configFile
+    ));
+    tab.setTitle('User preferences');
+  });
+
+  app.on('api-init-done', () => {
+    app.menus.merge({
+      Tools: [{
+        label: 'Default Preference',
+        command: 'default-preferences'
+      }, {
+        label: 'User Preference',
+        command: 'user-preferences'
+      }]
+    });
   });
 
   return config;
