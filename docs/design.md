@@ -18,10 +18,12 @@ Api modules are loaded using [`require-props`](https://github.com/parro-it/requi
 
 # Modules details
 
-## Commands
-## Config
-## Menus
-## Palette
-## Plugins
-## Shell
-## Tabs
+App objects member:
+
+## [commands](commands.md)
+## [config](config.md)
+## [menus](menus.md)
+## [palette](palette.md)
+## [plugins](plugins.md)
+## [shell](shell.md)
+## [tabs](tabs.md)
