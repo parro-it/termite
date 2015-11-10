@@ -41,24 +41,26 @@ const app = Object.assign(new EventEmitter(), {
   name: 'termite',
   window: null,
   packages: {},
-  packagesFolder: __dirname + '/../packages', //this could be removed
+  packagesFolder: __dirname + '/../packages', // this could be removed
 
   quit() {
     this.commands.execute('quit');
   }
 });
 
+console.log('api loading')
 requireProps(app, [
   './commands',
   './palette',
   './tabs',
   './config',
   './menus',
+  './shell',
   './plugins'
 ]);
 
 app.emit('api-init-done');
-
+console.log('api-init-done')
 app.menus.merge({
   File: [{
     label: 'Exit',

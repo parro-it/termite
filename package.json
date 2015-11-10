@@ -22,7 +22,11 @@
     "npm-keyword": "^4.1.0",
     "plugin-loader": "0.1.0",
     "require-props": "^0.1.1",
-    "yargs": "^3.29.0"
+    "yargs": "^3.29.0",
+    "hterm-umd": "^1.0.1",
+    "iterm-colors": "^1.0.2",
+    "pty.js": "^0.3.0",
+    "twemoji": "^1.4.1"
   },
   "scripts": {
     "start": "DEBUG=1 electron .",

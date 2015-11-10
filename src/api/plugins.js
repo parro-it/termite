@@ -8,17 +8,13 @@ const co = require('co');
 const mkdirp = require('mkdirp');
 const emptyDir = require('empty-dir');
 
-const defaultPlugins = [
-  'termite-plugin-shell'
-];
-
 module.exports = app => {
   const mod = Object.assign(new EventEmitter(), {
     load() {
       const pluginModules = this.pluginsFolder + '/node_modules';
       mkdirp.sync(pluginModules);
       if (emptyDir.sync(pluginModules)) {
-        return this.installDefaultPlugins();
+        return Promise.resolve();
       }
 
       const loader = new PluginLoader([pluginModules]);
@@ -70,7 +66,7 @@ module.exports = app => {
     const pluginToInstall = yield app.palette.open(plugins);
     try {
       yield mod.installPlugin(pluginToInstall);
-      alert(pluginToInstall + ' installed.');
+      alert(pluginToInstall + ' installed.'); // eslint-disable-line no-alert
     } catch (err) {
       process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
     }
