@@ -63,6 +63,9 @@ app.plugins.load()
   .then(() =>
     app.emit('packages-init-done')
   )
+  .then(() =>
+    require('remote').getCurrentWindow().show()
+  )
   .catch(err => {
     process.stderr.write(`Error loading plugins:\n${err.stack}\n`);
   });

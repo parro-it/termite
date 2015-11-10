@@ -28,7 +28,7 @@ app.on('ready', () => {
     frame: false
   });
 
-  win.showUrl(__dirname + '/assets/index.html', ()=>{});
+  win.showUrl(__dirname + '/assets/index.html', { show: false });
 });
 
 app.on('window-all-closed', function onWindowAllClosed() {
