@@ -57,6 +57,8 @@ requireProps(app, [
   './plugins'
 ]);
 
+app.emit('api-init-done');
+
 app.menus.merge({
   File: [{
     label: 'Exit',
