@@ -20,7 +20,7 @@
     "mkdirp": "^0.5.1",
     "node-uuid": "^1.4.3",
     "npm-keyword": "^4.1.0",
-    "plugin-loader": "0.0.2",
+    "plugin-loader": "0.1.0",
     "require-props": "^0.1.1",
     "yargs": "^3.29.0"
   },
