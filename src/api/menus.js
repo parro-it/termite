@@ -1,7 +1,3 @@
-const fs = require('fs');
-const join = require('path').join;
-const JSON5 = require('json5');
-
 function setupMenus(menuTemplate, termiteApp) {
   const remote = require('remote');
   const localShortcut = remote.require('electron-localshortcut');
@@ -30,32 +26,15 @@ function setupMenus(menuTemplate, termiteApp) {
 
   instrumentMenu(menuTemplate);
 
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  const btnMenu = document.querySelector('.btn-menu');
+  btnMenu.addEventListener('click', () => {
+    const rect = btnMenu.getBoundingClientRect();
+    menu.popup(Math.round(rect.left) - 50, Math.round(rect.bottom));
+  });
+
   if (process.platform === 'darwin') {
-    const menu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(menu);
-  } else {
-    const otherPlatformMenu = document.querySelector('.other-platform-menu');
-    const systemMenus = menuTemplate.map(m => {
-      const menuItem = document.createElement('span');
-      menuItem.textContent = m.label;
-      menuItem.submenu = m.submenu;
-
-      otherPlatformMenu.appendChild(menuItem);
-      return menuItem;
-    });
-
-    const popupMenu = menuItem => () => {
-      const rect = menuItem.getBoundingClientRect();
-      /* systemMenus
-        .filter(m => m !== menuItem)
-        .forEach(otherMenuItem =>
-          otherMenuItem.onmouseover = popupMenu(otherMenuItem)
-        ); */
-      const menu = Menu.buildFromTemplate(menuItem.submenu);
-      menu.popup(Math.round(rect.left), Math.round(rect.bottom));
-    };
-
-    systemMenus.forEach(menuItem => menuItem.onclick = popupMenu(menuItem));
+    Menu.setApplicationMenu(null);
   }
 }
 

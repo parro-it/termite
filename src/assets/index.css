@@ -43,7 +43,7 @@ html {
 }
 
 main.window-content {
-    height: -webkit-calc(100% - 100px);
+    height: -webkit-calc(100% - 78px);
     -webkit-app-region: no-drag;
     overflow-y: hidden;
 }
@@ -161,3 +161,13 @@ nav.other-platform-menu > span {
   white-space: nowrap;
 }
 
+.btn-menu {
+  position: absolute;
+  display: block;
+  top: 2px;
+  right: 2px;
+}
+
+.toolbar-header {
+    height: 30px;
+}
