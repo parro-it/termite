@@ -1,6 +1,11 @@
 const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
 
+
+if (process.env.DEBUG) {
+  require('debug-menu').install();
+}
+
 function registerWindowButtonHandlers() {
   const BrowserWindow = require('remote').require('browser-window');
 
@@ -48,7 +53,6 @@ const app = Object.assign(new EventEmitter(), {
   }
 });
 
-console.log('api loading')
 requireProps(app, [
   './commands',
   './palette',
@@ -60,7 +64,6 @@ requireProps(app, [
 ]);
 
 app.emit('api-init-done');
-console.log('api-init-done')
 app.menus.merge({
   File: [{
     label: 'Exit',
