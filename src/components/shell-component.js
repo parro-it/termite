@@ -3,6 +3,8 @@
 const pty = require('pty.js');
 const EventEmitter = require('events').EventEmitter;
 const htermAll = require('hterm-umd');
+const td = require('throttle-debounce');
+
 
 function createDomElements(elm) {
   const stdout = document.createElement('div');
@@ -27,9 +29,9 @@ function createTerminal(elms, pkg, app) {
     t.io.print(data);
   };
 
-  t.setWindowTitle = title => {
+  t.setWindowTitle = td.debounce(300, title => {
     app.tabs.current().setTitle(title);
-  };
+  });
 
   t.onTerminalReady = () => {
     // Create a new terminal IO object and give it the foreground.
