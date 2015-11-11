@@ -22,6 +22,7 @@
     "mkdirp": "^0.5.1",
     "node-uuid": "^1.4.3",
     "npm-keyword": "^4.1.0",
+    "photon": "connors/photon",
     "plugin-loader": "0.1.0",
     "pty.js": "^0.3.0",
     "require-props": "^0.1.1",
