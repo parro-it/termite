@@ -5,6 +5,10 @@ const twemoji = require('twemoji');
 const lib = htermAll.lib;
 const hterm = htermAll.hterm;
 
+hterm.ScrollPort.prototype.setScrollbarVisible = function(state) {
+  this.screen_.style.overflowY = state ? 'auto' : 'hidden';
+};
+
 hterm.TextAttributes.prototype.createContainer = function(optTextContent) {
   const isEmoji = twemoji.parse(optTextContent).indexOf('<img') !== -1;
   if (!isEmoji && this.isDefault()) {
