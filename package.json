@@ -31,7 +31,7 @@
     "yargs": "^3.29.0"
   },
   "scripts": {
-    "start": "DEBUG=1 electron .",
+    "start": "DEBUG=1 node_modules/electron-prebuilt/dist/electron . --in-process-gpu",
     "prepublish": "lint",
     "pkg-64": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=x64",
     "pkg-32": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=ia32",
@@ -41,11 +41,12 @@
     "extends": "devenv"
   },
   "devDependencies": {
-    "electron-packager": "^5.1.0",
-    "node-deb": "^0.1.3",
-    "tape-async": ">1.0.0",
     "debug-menu": "^0.1.1",
-    "electron-debug": "^0.4.0"
+    "electron-debug": "^0.4.0",
+    "electron-packager": "^5.1.0",
+    "electron-prebuilt": "^0.34.3",
+    "node-deb": "^0.1.3",
+    "tape-async": ">1.0.0"
   },
   "node_deb": {
     "start_script": "dist/termite-linux-x64/termite"

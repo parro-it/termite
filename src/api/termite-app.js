@@ -1,7 +1,7 @@
 const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
-require('app-title')();
-
+require('app-title')('termite - renderer process');
+console.log(process.pid)
 if (process.env.DEBUG) {
   require('debug-menu').install();
 }
