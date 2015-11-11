@@ -33,8 +33,8 @@
   "scripts": {
     "start": "DEBUG=1 node_modules/electron-prebuilt/dist/electron . --in-process-gpu",
     "prepublish": "lint",
-    "pkg-64": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=x64",
-    "pkg-32": "electron-packager . termite --icon=media/icon.png --asar --version=0.34.0 --ignore='(media|dist)' --overwrite --out=dist --platform=linux --arch=ia32",
+    "pkg-64": "electron-packager . termite --icon=media/icon.png --version=0.34.3 --ignore='(media|packaged|docs|node_modules/electron-packager|node_modules/electron-prebuilt)' --overwrite --out=packaged --platform=linux --arch=x64",
+    "pkg-32": "electron-packager . termite --icon=media/icon.png --version=0.34.3 --ignore='(media|packaged|docs|node_modules/electron-packager|node_modules/electron-prebuilt)' --overwrite --out=packaged --platform=linux --arch=ia32",
     "deb": "cd dist/termite-linux-x64 && node-deb . && mv *.deb dist"
   },
   "eslintConfig": {
