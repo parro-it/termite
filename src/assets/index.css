@@ -150,4 +150,14 @@ nav.other-platform-menu > span {
 }
 
 
+.tab-item .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: -webkit-calc(100% - 14px);
+  display: block;
+  position: relative;
+  left: 14px;
+  top: 2px;
+  white-space: nowrap;
+}
 

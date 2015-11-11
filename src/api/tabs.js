@@ -28,6 +28,7 @@ class Tab {
 
   setTitle(text) {
     this.title.textContent = text;
+    this.element.title = text;
   }
 
   createElement() {
