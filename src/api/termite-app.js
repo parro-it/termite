@@ -1,6 +1,6 @@
 const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
-
+require('app-title')();
 
 if (process.env.DEBUG) {
   require('debug-menu').install();

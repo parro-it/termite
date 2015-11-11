@@ -5,6 +5,7 @@ electronDetach({
   requireCmdlineArg: false
 });
 
+require('app-title')();
 const resolve = require('path').resolve;
 const app = require('app');
 const electronDebug = require('electron-debug');

@@ -7,9 +7,9 @@
   "license": "MIT",
   "repository": "parro-it/termite",
   "dependencies": {
+    "app-title": "^2.0.0",
     "co": "^4.6.0",
     "command-palette": "^1.1.1",
-
     "electron-detach": "^0.1.0",
     "electron-localshortcut": "^0.2.2",
     "electron-window": "^0.6.0",
