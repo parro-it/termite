@@ -56,6 +56,7 @@ const app = Object.assign(new EventEmitter(), {
 requireProps(app, [
   './commands',
   './palette',
+  './dialogs',
   './tabs',
   './config',
   './menus',

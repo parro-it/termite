@@ -60,7 +60,7 @@ module.exports = app => {
     const pluginToInstall = yield app.palette.open(plugins);
     try {
       yield mod.installPlugin(pluginToInstall);
-      alert(pluginToInstall + ' installed.'); // eslint-disable-line no-alert
+      app.dialogs.alert(pluginToInstall + ' installed successfully.', 'Plugin installed');
     } catch (err) {
       process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
     }
