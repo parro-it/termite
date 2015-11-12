@@ -1,7 +1,7 @@
 'use strict';
 
 function start() {
-  require('app-title')('termite - main process');
+  // require('app-title')('termite - main process');
   const resolve = require('path').resolve;
   const app = require('app');
   const electronDebug = require('electron-debug');
@@ -35,7 +35,9 @@ function start() {
   });
 }
 
+
 const electronDetach = require('electron-detach');
 if (electronDetach({ requireCmdlineArg: false })) {
   start();
 }
+

@@ -10,7 +10,7 @@
     "app-title": "^2.0.0",
     "co": "^4.6.0",
     "command-palette": "^1.1.1",
-    "electron-detach": "^0.1.0",
+    "electron-detach": "^0.2.0",
     "electron-localshortcut": "^0.2.2",
     "electron-window": "^0.6.0",
     "empty-dir": "^0.1.0",
@@ -31,7 +31,7 @@
     "yargs": "^3.29.0"
   },
   "scripts": {
-    "start": "DEBUG=1 node_modules/electron-prebuilt/dist/electron . --in-process-gpu",
+    "start": "DEBUG=1 electron . --in-process-gpu",
     "prepublish": "lint",
     "pkg-64": "electron-packager . termite --icon=media/icon.png --version=0.34.3 --ignore='(media|packaged|docs|node_modules/electron-packager|node_modules/electron-prebuilt)' --overwrite --out=packaged --platform=linux --arch=x64",
     "pkg-32": "electron-packager . termite --icon=media/icon.png --version=0.34.3 --ignore='(media|packaged|docs|node_modules/electron-packager|node_modules/electron-prebuilt)' --overwrite --out=packaged --platform=linux --arch=ia32",
