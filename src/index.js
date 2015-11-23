@@ -23,7 +23,6 @@ function start() {
       'accept-first-mouse': true,
       frame: false
     });
-
     win._loadUrlWithArgs(__dirname + '/assets/index.html', () => {});
   });
 
