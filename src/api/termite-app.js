@@ -1,6 +1,7 @@
 const requireProps = require('require-props')(__dirname);
 const EventEmitter = require('events').EventEmitter;
 require('app-title')('termite - renderer process');
+const dialogs = require('nice-dialogs');
 
 if (process.env.DEBUG) {
   require('debug-menu').install();
@@ -37,7 +38,8 @@ function registerCommands(commands) {
   });
 
   commands.register('quit', () => {
-    window.close();
+    dialogs.confirm('Are you sure to quit termite?', 'Quit confirmation')
+      .then(answer => answer ? window.close() : null);
   });
 }
 
