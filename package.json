@@ -12,6 +12,7 @@
     "command-palette": "^1.1.1",
     "electron-detach": "^0.2.0",
     "electron-localshortcut": "^0.2.2",
+    "electron-prebuilt": "^0.35.1",
     "electron-window": "^0.6.0",
     "empty-dir": "^0.1.0",
     "enpeem": "^2.1.0",

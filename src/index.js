@@ -16,7 +16,7 @@ function start() {
   });
 
   app.on('ready', () => {
-    const appIcon = resolve(__dirname, '/../media/icon.png');
+    const appIcon = resolve(__dirname, '/assets/media/icon.png');
 
     const win = createWindow({
       resizable: true,
@@ -25,7 +25,7 @@ function start() {
       frame: false
     });
 
-    win.showUrl(__dirname + '/assets/index.html', { show: false });
+    win._loadUrlWithArgs(__dirname + '/assets/index.html', () => {});
   });
 
   app.on('window-all-closed', function onWindowAllClosed() {
