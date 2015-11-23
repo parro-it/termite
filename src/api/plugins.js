@@ -7,6 +7,7 @@ const npm = require('enpeem');
 const co = require('co');
 const mkdirp = require('mkdirp');
 const emptyDir = require('empty-dir');
+const dialogs = require('nice-dialogs');
 
 module.exports = app => {
   const mod = Object.assign(new EventEmitter(), {
@@ -60,7 +61,7 @@ module.exports = app => {
     const pluginToInstall = yield app.palette.open(plugins);
     try {
       yield mod.installPlugin(pluginToInstall);
-      app.dialogs.alert(pluginToInstall + ' installed successfully.', 'Plugin installed');
+      dialogs.alert(pluginToInstall + ' installed successfully.', 'Plugin installed');
     } catch (err) {
       process.stderr.write('Error occurred while installing package: ' + err.stack + '\n');
     }
