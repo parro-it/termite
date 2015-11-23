@@ -16,8 +16,7 @@ function start() {
   });
 
   app.on('ready', () => {
-    const appIcon = resolve(__dirname, '/assets/media/icon.png');
-
+    const appIcon = resolve(__dirname, 'assets/icon.png');
     const win = createWindow({
       resizable: true,
       icon: appIcon,
