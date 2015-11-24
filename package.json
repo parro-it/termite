@@ -41,7 +41,7 @@
     "deb": "cd dist/termite-linux-x64 && node-deb . && mv *.deb dist"
   },
   "eslintConfig": {
-    "extends": "devenv"
+    "extends": "js"
   },
   "devDependencies": {
     "debug-menu": "^0.2.0",
